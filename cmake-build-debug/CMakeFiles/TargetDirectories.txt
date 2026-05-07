@@ -1,0 +1,3 @@
+C:/Users/Andra/Desktop/ITU/sem 2/Graphics Programming/forced-perspective/cmake-build-debug/CMakeFiles/forced_perspective.dir
+C:/Users/Andra/Desktop/ITU/sem 2/Graphics Programming/forced-perspective/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Andra/Desktop/ITU/sem 2/Graphics Programming/forced-perspective/cmake-build-debug/CMakeFiles/rebuild_cache.dir
