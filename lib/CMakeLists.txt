@@ -1,5 +1,6 @@
 add_subdirectory(assimp)
 add_subdirectory(bullet3)
+add_subdirectory(glad)
 add_subdirectory(glfw)
 add_subdirectory(glm)
 add_subdirectory(imgui)
@@ -8,6 +9,7 @@ target_link_libraries(imgui PUBLIC glfw)
 add_library(lib INTERFACE)
 target_link_libraries(lib INTERFACE
     assimp::assimp
+    glad
     glfw
     glm::glm
     imgui
