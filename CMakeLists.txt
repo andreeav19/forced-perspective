@@ -3,4 +3,5 @@ project(forced_perspective)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(forced_perspective main.cpp)
+add_subdirectory(lib)
+add_subdirectory(src)
