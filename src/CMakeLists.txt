@@ -6,6 +6,8 @@ add_executable(${PROJECT_NAME}
         ../headers/Application.h
         InputManager.cpp
         ../headers/InputManager.h
+        Shader.cpp
+        ../headers/Shader.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 

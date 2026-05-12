@@ -2,7 +2,7 @@
 
 int main()
 {
-    const Application* application = Application::GetInstance();
+    Application* application = Application::GetInstance();
 
     application->run();
 
