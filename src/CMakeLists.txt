@@ -1,5 +1,11 @@
 add_executable(${PROJECT_NAME}
     main.cpp
+        Window.cpp
+        ../headers/Window.h
+        Application.cpp
+        ../headers/Application.h
+        InputManager.cpp
+        ../headers/InputManager.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 
