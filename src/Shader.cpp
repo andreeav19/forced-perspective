@@ -36,6 +36,18 @@ bool Shader::initShader(unsigned int& shader, const GLenum shaderType, const std
     return true;
 }
 
+void Shader::initUniform(int& uniformLocation, const std::string &uniformName) const
+{
+    uniformLocation = glGetUniformLocation(shader_program, "vertexColor");
+    if (uniformLocation == -1) {
+        std::cout << "Error getting uniform location for: " << uniformName << std::endl;
+    }
+}
+
+void Shader::initUniforms(){}
+
+void Shader::useUniforms() {}
+
 bool Shader::init()
 {
     // add shaders
@@ -63,6 +75,8 @@ bool Shader::init()
     // delete shaders
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
+
+    initUniforms();
     return true;
 }
 

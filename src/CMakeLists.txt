@@ -8,6 +8,8 @@ add_executable(${PROJECT_NAME}
         ../headers/InputManager.h
         Shader.cpp
         ../headers/Shader.h
+        TextureManager.cpp
+        ../headers/TextureManager.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 
