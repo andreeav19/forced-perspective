@@ -7,6 +7,7 @@
 #include "TextureManager.h"
 #include "Camera.h"
 #include "ActionController.h"
+#include "LightManager.h"
 
 // temp
 #include <glm/glm.hpp>
@@ -21,6 +22,7 @@ class Application {
     std::unique_ptr<TextureManager> texture_manager;
     std::unique_ptr<Shader> shader;
     std::unique_ptr<Camera> camera;
+    std::unique_ptr<LightManager> light_manager;
 
     unsigned int vao, vbo, ebo; // temp
     float delta_time;

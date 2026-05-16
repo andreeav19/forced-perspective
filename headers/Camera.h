@@ -22,6 +22,7 @@ public:
     Camera();
     ~Camera() = default;
 
+    glm::vec3 GetPosition() const { return position; }
     glm::vec3 GetFront() const { return front; }
     glm::vec3 GetRight() const { return right; }
 

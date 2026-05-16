@@ -16,6 +16,10 @@ add_executable(${PROJECT_NAME}
         ../headers/InputAction.h
         ActionController.cpp
         ../headers/ActionController.h
+        Light.cpp
+        ../headers/Light.h
+        LightManager.cpp
+        ../headers/LightManager.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 

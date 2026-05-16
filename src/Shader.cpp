@@ -49,6 +49,10 @@ void Shader::initUniforms()
     initUniform(ul_model, "model");
     initUniform(ul_view, "view");
     initUniform(ul_projection, "projection");
+    initUniform(ul_ambience, "ambienceStrength");
+    initUniform(ul_light_pos, "lightPos");
+    initUniform(ul_light_color, "lightColor");
+    initUniform(ul_view_position, "viewPos");
 }
 
 void Shader::useUniforms() {}
@@ -103,4 +107,24 @@ void Shader::SetUniformView(glm::mat4 view) const
 void Shader::SetUniformProjection(glm::mat4 projection) const
 {
     glUniformMatrix4fv(ul_projection, 1, GL_FALSE, glm::value_ptr(projection));
+}
+
+void Shader::SetUniformAmbienceStrength(const float ambience) const
+{
+    glUniform1f(ul_ambience, ambience);
+}
+
+void Shader::SetUniformLightPosition(glm::vec3 light_position) const
+{
+    glUniform3fv(ul_light_pos, 1, value_ptr(light_position));
+}
+
+void Shader::SetUniformLightColor(glm::vec3 light_color) const
+{
+    glUniform3fv(ul_light_color, 1, value_ptr(light_color));
+}
+
+void Shader::SetUniformViewPosition(glm::vec3 view_position) const
+{
+    glUniform3fv(ul_view_position, 1, value_ptr(view_position));
 }
