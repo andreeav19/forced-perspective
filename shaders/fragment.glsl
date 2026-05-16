@@ -6,30 +6,42 @@ in vec2 TexCoord;
 in vec3 FragPos;
 in vec3 Normal;
 
+struct Light {
+    vec3 position;
+
+    vec3 ambience;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct Material {
+    vec3 ambience;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+};
+
 uniform sampler2D texSampler;
-
-uniform float ambienceStrength;
-uniform vec3 lightPos;
-uniform vec3 lightColor;
-
 uniform vec3 viewPos;
-float specularStrength = 10.5f;
+
+uniform Light light;
+uniform Material material;
 
 void main() {
-    vec3 ambient = ambienceStrength * lightColor;
+    vec3 ambience = material.ambience * light.ambience;
     vec3 normal = normalize(Normal);
-    vec3 lightDirection = normalize(lightPos - FragPos);
+    vec3 lightDirection = normalize(light.position - FragPos);
 
     float diffuseValue = max(dot(normal, lightDirection), 0.0f);
-    vec3 diffuse = diffuseValue * lightColor;
+    vec3 diffuse = material.diffuse * diffuseValue * light.diffuse;
 
     vec3 viewDirection = normalize(viewPos - FragPos);
     vec3 reflectDirection = reflect(-lightDirection, normal);
 
-    float specularValue = pow(max(dot(viewDirection, reflectDirection), 0.0f), 32);
-    vec3 specular = specularStrength * specularValue * lightColor;
+    float specularValue = pow(max(dot(viewDirection, reflectDirection), 0.0f), material.shininess);
+    vec3 specular = material.specular * specularValue * light.specular;
 
     vec3 baseColor = texture(texSampler, TexCoord).xyz;
-    vec3 finalColor = (ambient + diffuse + specular) * baseColor;
+    vec3 finalColor = (ambience + diffuse + specular) * baseColor;
     FragColor = vec4(finalColor, 1.0f);
 }

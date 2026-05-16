@@ -14,14 +14,14 @@
 class Shader {
     unsigned int shader_program;
     int ul_model, ul_view, ul_projection;
-    int ul_ambience, ul_light_pos, ul_light_color;
-    int ul_view_position;
+    int ul_view_position, ul_light_position;
+    int ul_light_ambience, ul_light_diffuse, ul_light_specular;
+    int ul_mat_ambience, ul_mat_diffuse, ul_mat_specular, ul_mat_shininess;
 
     static std::string loadShaderSource(const std::string& filename);
     static bool initShader(unsigned int& shader, GLenum shaderType, const std::string &filename);
     void initUniform(int& uniformLocation, const std::string &uniformName) const;
     void initUniforms();
-    void useUniforms();
 
 public:
     Shader() = default;
@@ -32,8 +32,7 @@ public:
     void SetUniformModel(glm::mat4 model) const;
     void SetUniformView(glm::mat4 view) const;
     void SetUniformProjection(glm::mat4 projection) const;
-    void SetUniformAmbienceStrength(float ambience) const;
-    void SetUniformLightPosition(glm::vec3 light_position) const;
-    void SetUniformLightColor(glm::vec3 light_color) const;
     void SetUniformViewPosition(glm::vec3 view_position) const;
+    void SetUniformLight(glm::vec3 light_position, glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular) const;
+    void SetUniformMaterial(glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular, float shininess) const;
 };

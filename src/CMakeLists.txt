@@ -20,6 +20,8 @@ add_executable(${PROJECT_NAME}
         ../headers/Light.h
         LightManager.cpp
         ../headers/LightManager.h
+        Material.cpp
+        ../headers/Material.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 

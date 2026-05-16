@@ -8,10 +8,12 @@
 #include "Camera.h"
 #include "ActionController.h"
 #include "LightManager.h"
+#include "Material.h"
 
 // temp
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 
 class Application {
     static std::unique_ptr<Application> Instance;
@@ -24,7 +26,10 @@ class Application {
     std::unique_ptr<Camera> camera;
     std::unique_ptr<LightManager> light_manager;
 
-    unsigned int vao, vbo, ebo; // temp
+    // temp
+    unsigned int vao, vbo, ebo;
+    std::unique_ptr<Material> material;
+
     float delta_time;
     float last_frame;
 

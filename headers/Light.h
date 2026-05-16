@@ -3,16 +3,18 @@
 #include <glm/glm.hpp>
 
 class Light {
-    static float ambience;
     glm::vec3 position;
-    glm::vec3 color;
+    glm::vec3 ambience;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
 
 public:
     Light();
-    Light(glm::vec3 position, glm::vec3 color);
+    Light(glm::vec3 position, glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular);
     ~Light() = default;
 
-    static float GetAmbience() { return ambience; }
     glm::vec3 GetPosition() const { return position; }
-    glm::vec3 GetColor() const { return color; }
+    glm::vec3 GetAmbience() const { return ambience; }
+    glm::vec3 GetDiffuse() const { return diffuse; }
+    glm::vec3 GetSpecular() const { return specular; }
 };

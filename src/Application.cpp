@@ -23,6 +23,7 @@ Application::Application(): vao(0), vbo(0), ebo(0), delta_time(0), last_frame(0)
     camera = std::make_unique<Camera>();
     action_controller = std::make_unique<ActionController>();
     light_manager = std::make_unique<LightManager>();
+    material = std::make_unique<Material>();
 }
 
 bool Application::init() const
@@ -157,6 +158,12 @@ void Application::updateUniforms() const
     shader->SetUniformViewPosition(camera->GetPosition());
 
     light_manager->SetUniforms(shader.get());
+
+    shader->SetUniformMaterial(
+        material->GetAmbience(),
+        material->GetDiffuse(),
+        material->GetSpecular(),
+        material->GetShininess());
 }
 
 void Application::calculateDeltaTime()
