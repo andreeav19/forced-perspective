@@ -15,6 +15,7 @@ class Camera {
     glm::vec3 right;
     glm::vec3 up;
 
+    float yaw, pitch;
     float move_speed = 1.0f;
 
 public:
@@ -26,5 +27,6 @@ public:
 
     void calculateCameraVectors();
     void move(glm::vec3 direction);
+    void orient(double mouse_x, double mouse_y);
     glm::mat4 calculateViewMatrix() const;
 };

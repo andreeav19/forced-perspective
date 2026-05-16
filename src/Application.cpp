@@ -44,6 +44,7 @@ bool Application::init() const
     }
 
     input_manager->SetWindow(window->GetWindow());
+    input_manager->SetupMouseInput();
 
     return true;
 }

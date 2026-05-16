@@ -1,6 +1,6 @@
 #include "../headers/ActionController.h"
 
-void ActionController::ControlCamera(const InputManager *input_manager, Camera *camera)
+void ActionController::ControlCameraMovement(const InputManager *input_manager, Camera *camera)
 {
     glm::vec3 direction(0.0f);
 
@@ -15,5 +15,19 @@ void ActionController::ControlCamera(const InputManager *input_manager, Camera *
 
     if (length(direction) > 0.0f)
         direction = normalize(direction);
+
+    direction.y = 0.0f; // temp solution
     camera->move(direction);
+}
+
+void ActionController::ControlCameraOrientation(InputManager *input_manager, Camera *camera)
+{
+    camera->orient(input_manager->GetMouseXOffset(), input_manager->GetMouseYOffset());
+    input_manager->ResetMouseOffsets();
+}
+
+void ActionController::ControlCamera(InputManager *input_manager, Camera *camera)
+{
+    ControlCameraMovement(input_manager, camera);
+    ControlCameraOrientation(input_manager, camera);
 }
