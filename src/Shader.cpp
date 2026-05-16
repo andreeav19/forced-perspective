@@ -38,13 +38,18 @@ bool Shader::initShader(unsigned int& shader, const GLenum shaderType, const std
 
 void Shader::initUniform(int& uniformLocation, const std::string &uniformName) const
 {
-    uniformLocation = glGetUniformLocation(shader_program, "vertexColor");
+    uniformLocation = glGetUniformLocation(shader_program, uniformName.c_str());
     if (uniformLocation == -1) {
         std::cout << "Error getting uniform location for: " << uniformName << std::endl;
     }
 }
 
-void Shader::initUniforms(){}
+void Shader::initUniforms()
+{
+    initUniform(ul_model, "model");
+    initUniform(ul_view, "view");
+    initUniform(ul_projection, "projection");
+}
 
 void Shader::useUniforms() {}
 
@@ -83,4 +88,19 @@ bool Shader::init()
 void Shader::use() const
 {
     glUseProgram(shader_program);
+}
+
+void Shader::SetUniformModel(glm::mat4 model) const
+{
+    glUniformMatrix4fv(ul_model, 1, GL_FALSE, glm::value_ptr(model));
+}
+
+void Shader::SetUniformView(glm::mat4 view) const
+{
+    glUniformMatrix4fv(ul_view, 1, GL_FALSE, glm::value_ptr(view));
+}
+
+void Shader::SetUniformProjection(glm::mat4 projection) const
+{
+    glUniformMatrix4fv(ul_projection, 1, GL_FALSE, glm::value_ptr(projection));
 }

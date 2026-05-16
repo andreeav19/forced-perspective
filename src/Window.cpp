@@ -37,6 +37,7 @@ bool Window::load()
         std::cout << "Failed to initialise GLAD" << std::endl;
         return false;
     }
+    glEnable(GL_DEPTH_TEST);
     return true;
 }
 
@@ -48,7 +49,7 @@ bool Window::shouldClose() const
 void Window::clear() const
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::terminate() const

@@ -1,8 +1,18 @@
 #pragma once
 
-#include "../lib/glfw/include/GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
+
+#include "InputAction.h"
 
 class InputManager {
+    GLFWwindow* window;
+
 public:
-    void processInput(GLFWwindow* window);
+    InputManager() = default;
+    ~InputManager() = default;
+
+    void SetWindow(GLFWwindow* new_window);
+
+    bool isActionPressed(Action action) const;
+    void processInput() const;
 };

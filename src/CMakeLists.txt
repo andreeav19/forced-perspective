@@ -10,6 +10,12 @@ add_executable(${PROJECT_NAME}
         ../headers/Shader.h
         TextureManager.cpp
         ../headers/TextureManager.h
+        Camera.cpp
+        ../headers/Camera.h
+        ../headers/Constants.h
+        ../headers/InputAction.h
+        ActionController.cpp
+        ../headers/ActionController.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 

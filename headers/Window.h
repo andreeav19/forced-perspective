@@ -16,12 +16,13 @@ class Window {
 public:
     Window();
 
-    GLFWwindow *GetWindow() const { return window.get(); }
+    [[nodiscard]] GLFWwindow *GetWindow() const { return window.get(); }
 
-    void init();
+    [[nodiscard]] bool shouldClose() const;
     bool createWindow();
     bool load();
-    bool shouldClose() const;
+
+    void init();
     void clear() const;
     void terminate() const;
 

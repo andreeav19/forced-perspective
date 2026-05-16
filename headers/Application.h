@@ -5,26 +5,44 @@
 #include "InputManager.h"
 #include "Shader.h"
 #include "TextureManager.h"
+#include "Camera.h"
+#include "ActionController.h"
+
+// temp
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 class Application {
     static std::unique_ptr<Application> Instance;
 
     std::unique_ptr<Window> window;
+    std::unique_ptr<ActionController> action_controller;
     std::unique_ptr<InputManager> input_manager;
     std::unique_ptr<TextureManager> texture_manager;
     std::unique_ptr<Shader> shader;
+    std::unique_ptr<Camera> camera;
+
     unsigned int vao, vbo, ebo; // temp
+    float delta_time;
+    float last_frame;
 
     Application();
     ~Application() = default;
 
     friend std::default_delete<Application>;
 
-    bool init() const;
+    [[nodiscard]] bool init() const;
+
     void render() const;
     void setupShape(); // temp
+    void updateUniforms() const;
+
+    void calculateDeltaTime();
+    void update() const;
 public:
     static Application* GetInstance();
+
+    float GetDeltaTime() const;
 
     void run();
 };
