@@ -16,6 +16,7 @@ class Shader {
     int ul_model, ul_view, ul_projection;
     int ul_view_position, ul_light_position;
     int ul_light_ambience, ul_light_diffuse, ul_light_specular;
+    int ul_light_constant, ul_light_linear, ul_light_quadratic;
     int ul_mat_diffuse, ul_mat_specular, ul_mat_shininess;
 
     static std::string loadShaderSource(const std::string& filename);
@@ -33,6 +34,7 @@ public:
     void SetUniformView(glm::mat4 view) const;
     void SetUniformProjection(glm::mat4 projection) const;
     void SetUniformViewPosition(glm::vec3 view_position) const;
-    void SetUniformLight(glm::vec3 light_position, glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular) const;
+    void SetUniformLight(glm::vec3 light_position, glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular,
+        float constant, float linear, float quadratic) const;
     void SetUniformMaterial(float shininess) const;
 };

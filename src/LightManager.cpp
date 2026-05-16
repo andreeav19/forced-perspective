@@ -17,6 +17,9 @@ void LightManager::SetUniforms(const Shader *shader) const
     lights.front()->GetPosition(),
         lights.front()->GetAmbience(),
         lights.front()->GetDiffuse(),
-        lights.front()->GetSpecular()
+        lights.front()->GetSpecular(),
+        lights.front()->GetConstant(),
+        lights.front()->GetLinear(),
+        lights.front()->GetQuadratic()
     );
 }

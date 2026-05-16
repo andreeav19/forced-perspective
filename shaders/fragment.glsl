@@ -12,6 +12,10 @@ struct Light {
     vec3 ambience;
     vec3 diffuse;
     vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 struct Material {
@@ -42,6 +46,9 @@ void main() {
     float specularValue = pow(max(dot(viewDirection, reflectDirection), 0.0f), material.shininess);
     vec3 specular = baseSpecular * specularValue * light.specular;
 
-    vec3 finalColor = ambience + diffuse + specular;
+    float dist = length(light.position - FragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * dist * dist);
+
+    vec3 finalColor = (ambience + diffuse + specular) * attenuation;
     FragColor = vec4(finalColor, 1.0f);
 }
