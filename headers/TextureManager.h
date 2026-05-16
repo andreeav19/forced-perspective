@@ -11,6 +11,7 @@ class TextureManager {
     unsigned int texture = 0;
 
 public:
-    void loadTexture(const std::string &filename);
-    void useTexture() const; // temp
+    static void useTexture(unsigned int texture_id, unsigned int unit);
+
+    int loadTexture(const std::string &filename);
 };

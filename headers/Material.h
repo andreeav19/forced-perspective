@@ -1,19 +1,18 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 class Material {
-    glm::vec3 ambience;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
+    unsigned int diffuse_map;
+    unsigned int specular_map;
     float shininess;
 
 public:
     Material();
-    Material(glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular, float shininess);
+    Material(unsigned int diffuse_map, unsigned int specular_map, float shininess);
 
-    [[nodiscard]] glm::vec3 GetAmbience() const { return ambience; }
-    [[nodiscard]] glm::vec3 GetDiffuse() const { return diffuse; }
-    [[nodiscard]] glm::vec3 GetSpecular() const { return specular; }
     [[nodiscard]] float GetShininess() const { return shininess; }
+
+    void SetDiffuseMap(const unsigned int new_diffuse) { diffuse_map = new_diffuse; }
+    void SetSpecularMap(const unsigned int new_specular) { specular_map = new_specular; }
+
+    void UseTextures() const;
 };

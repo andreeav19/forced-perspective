@@ -59,7 +59,6 @@ void Shader::initUniforms()
     initUniform(ul_light_specular, "light.specular");
 
     // material
-    initUniform(ul_mat_ambience, "material.ambience");
     initUniform(ul_mat_diffuse, "material.diffuse");
     initUniform(ul_mat_specular, "material.specular");
     initUniform(ul_mat_shininess, "material.shininess");
@@ -124,16 +123,15 @@ void Shader::SetUniformViewPosition(glm::vec3 view_position) const
 
 void Shader::SetUniformLight(glm::vec3 light_position, glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular) const
 {
-    glUniform3fv(ul_light_ambience, 1, value_ptr(light_position));
+    glUniform3fv(ul_light_position, 1, value_ptr(light_position));
     glUniform3fv(ul_light_ambience, 1, value_ptr(ambience));
     glUniform3fv(ul_light_diffuse, 1, value_ptr(diffuse));
     glUniform3fv(ul_light_specular, 1, value_ptr(specular));
 }
 
-void Shader::SetUniformMaterial(glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular, float shininess) const
+void Shader::SetUniformMaterial(float shininess) const
 {
-    glUniform3fv(ul_mat_ambience, 1, value_ptr(ambience));
-    glUniform3fv(ul_mat_diffuse, 1, value_ptr(diffuse));
-    glUniform3fv(ul_mat_specular, 1, value_ptr(specular));
+    glUniform1i(ul_mat_diffuse, 0);
+    glUniform1i(ul_mat_specular, 1);
     glUniform1f(ul_mat_shininess, shininess);
 }

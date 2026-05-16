@@ -67,8 +67,8 @@ void Application::render() const
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
+    material->UseTextures();
     glBindVertexArray(vao);
-    texture_manager->useTexture();
 
     for (unsigned int i = 0; i < 10; i++)
     {
@@ -159,11 +159,7 @@ void Application::updateUniforms() const
 
     light_manager->SetUniforms(shader.get());
 
-    shader->SetUniformMaterial(
-        material->GetAmbience(),
-        material->GetDiffuse(),
-        material->GetSpecular(),
-        material->GetShininess());
+    shader->SetUniformMaterial(material->GetShininess());
 }
 
 void Application::calculateDeltaTime()
@@ -181,10 +177,11 @@ void Application::update() const
 void Application::run()
 {
     if (!init()) return;
+    //temp
     setupShape();
-    texture_manager->loadTexture("wall.jpg"); // temp
+    material->SetDiffuseMap(texture_manager->loadTexture("container2.png"));
+    material->SetSpecularMap(texture_manager->loadTexture("container2_specular.png"));
 
-    // temp
     const glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
     camera->calculateCameraVectors();
 
