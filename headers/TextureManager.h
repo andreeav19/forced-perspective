@@ -3,15 +3,19 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
 #include <glad/glad.h>
 
 class TextureManager {
-    // temp
-    unsigned int texture = 0;
+    std::unordered_map<std::string, unsigned int> textures;
+    std::string default_texture = "white.png";
 
 public:
-    static void useTexture(unsigned int texture_id, unsigned int unit);
+    ~TextureManager();
+
+    void init();
+    void useTexture(int texture_id, unsigned int unit);
 
     int loadTexture(const std::string &filename);
 };

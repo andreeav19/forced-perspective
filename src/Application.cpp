@@ -48,6 +48,8 @@ bool Application::init() const
     input_manager->SetWindow(window->GetWindow());
     input_manager->SetupMouseInput();
 
+    texture_manager->init();
+
     return true;
 }
 
@@ -157,7 +159,7 @@ void Application::updateUniforms() const
     shader->SetUniformView(view);
     shader->SetUniformViewPosition(camera->GetPosition());
 
-    light_manager->SetUniforms(shader.get());
+    light_manager->SetUniforms();
 
     shader->SetUniformMaterial(material->GetShininess());
 }

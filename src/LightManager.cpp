@@ -1,5 +1,7 @@
 #include "../headers/LightManager.h"
 
+#include "../headers/Application.h"
+
 LightManager::LightManager()
 {
     SetupLights();
@@ -31,8 +33,10 @@ void LightManager::SetUniform(const Shader *shader, const Light *light, int inde
     );
 }
 
-void LightManager::SetUniforms(const Shader *shader) const
+void LightManager::SetUniforms() const
 {
+    const Shader *shader = Application::GetInstance()->GetShader();
+
     for (int i = 0; i < LIGHTS_NUMBER; i++) {
         SetUniform(shader, lights[i].get(), i);
     }

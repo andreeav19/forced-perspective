@@ -49,7 +49,9 @@ class Application {
 public:
     static Application* GetInstance();
 
-    float GetDeltaTime() const;
+    [[nodiscard]] float GetDeltaTime() const;
+    [[nodiscard]] TextureManager* GetTextureManager() const { return texture_manager.get(); }
+    [[nodiscard]] Shader* GetShader() const { return shader.get(); }
 
     void run();
 };

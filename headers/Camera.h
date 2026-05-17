@@ -22,12 +22,12 @@ public:
     Camera();
     ~Camera() = default;
 
-    glm::vec3 GetPosition() const { return position; }
-    glm::vec3 GetFront() const { return front; }
-    glm::vec3 GetRight() const { return right; }
+    [[nodiscard]] glm::vec3 GetPosition() const { return position; }
+    [[nodiscard]] glm::vec3 GetFront() const { return front; }
+    [[nodiscard]] glm::vec3 GetRight() const { return right; }
 
     void calculateCameraVectors();
     void move(glm::vec3 direction);
     void orient(double mouse_x, double mouse_y);
-    glm::mat4 calculateViewMatrix() const;
+    [[nodiscard]] glm::mat4 calculateViewMatrix() const;
 };

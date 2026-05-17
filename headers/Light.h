@@ -16,13 +16,13 @@ public:
         float constant, float linear, float quadratic);
     ~Light() = default;
 
-    glm::vec3 GetPosition() const { return position; }
-    glm::vec3 GetAmbience() const { return ambience; }
-    glm::vec3 GetDiffuse() const { return diffuse; }
-    glm::vec3 GetSpecular() const { return specular; }
-    float GetConstant() const { return constant; }
-    float GetLinear() const { return linear; }
-    float GetQuadratic() const { return quadratic; }
+    [[nodiscard]] glm::vec3 GetPosition() const { return position; }
+    [[nodiscard]] glm::vec3 GetAmbience() const { return ambience; }
+    [[nodiscard]] glm::vec3 GetDiffuse() const { return diffuse; }
+    [[nodiscard]] glm::vec3 GetSpecular() const { return specular; }
+    [[nodiscard]] float GetConstant() const { return constant; }
+    [[nodiscard]] float GetLinear() const { return linear; }
+    [[nodiscard]] float GetQuadratic() const { return quadratic; }
 
     void SetPosition(const glm::vec3 new_position) { position = new_position; }
 };

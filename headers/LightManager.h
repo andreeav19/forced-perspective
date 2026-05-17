@@ -17,5 +17,5 @@ public:
     LightManager();
     ~LightManager() = default;
 
-    void SetUniforms(const Shader* shader) const;
+    void SetUniforms() const;
 };

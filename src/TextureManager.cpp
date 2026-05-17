@@ -5,6 +5,8 @@
 
 int TextureManager::loadTexture(const std::string &filename)
 {
+    if (textures.contains(filename)) return textures[filename];
+
     const std::filesystem::path file_path = std::filesystem::path(PROJECT_ROOT)/ "textures" / filename;
     int width = 0, height = 0, channels = 0;
     unsigned char* pixels = stbi_load(file_path.string().c_str(), &width, &height, &channels, 0);
@@ -24,6 +26,7 @@ int TextureManager::loadTexture(const std::string &filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     GLenum format = GL_RGB;
+    if (channels == 1) format = GL_RED;
     if (channels == 3) format = GL_RGB;
     else if (channels == 4) format = GL_RGBA;
     else {
@@ -35,11 +38,27 @@ int TextureManager::loadTexture(const std::string &filename)
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(pixels);
+    textures[filename] = texture_id;
     return texture_id;
 }
 
-void TextureManager::useTexture(const unsigned int texture_id, const unsigned int unit)
+TextureManager::~TextureManager()
+{
+    for (const auto& [name, texture_id] : textures)
+        glDeleteTextures(1, &texture_id);
+}
+
+void TextureManager::init()
+{
+    loadTexture(default_texture);
+}
+
+void TextureManager::useTexture(const int texture_id, const unsigned int unit)
 {
     glActiveTexture(GL_TEXTURE0 + unit);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
+
+    if (texture_id > -1)
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+    else
+        glBindTexture(GL_TEXTURE_2D, textures[default_texture]);
 }

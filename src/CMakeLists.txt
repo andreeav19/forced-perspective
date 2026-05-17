@@ -22,6 +22,8 @@ add_executable(${PROJECT_NAME}
         ../headers/LightManager.h
         Material.cpp
         ../headers/Material.h
+        Mesh.cpp
+        ../headers/Mesh.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 

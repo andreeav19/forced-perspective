@@ -19,8 +19,8 @@ public:
     InputManager();
     ~InputManager() = default;
 
-    float GetMouseXOffset() const { return mouse_x_offset; }
-    float GetMouseYOffset() const { return mouse_y_offset; }
+    [[nodiscard]] float GetMouseXOffset() const { return mouse_x_offset; }
+    [[nodiscard]] float GetMouseYOffset() const { return mouse_y_offset; }
 
     void SetWindow(GLFWwindow* new_window);
 
