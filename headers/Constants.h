@@ -1,5 +1,7 @@
 #pragma once
 
+#define LIGHTS_NUMBER 4
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 

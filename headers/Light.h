@@ -23,4 +23,6 @@ public:
     float GetConstant() const { return constant; }
     float GetLinear() const { return linear; }
     float GetQuadratic() const { return quadratic; }
+
+    void SetPosition(const glm::vec3 new_position) { position = new_position; }
 };

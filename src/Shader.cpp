@@ -53,13 +53,17 @@ void Shader::initUniforms()
 
     // light
     initUniform(ul_view_position, "viewPos");
-    initUniform(ul_light_position, "light.position");
-    initUniform(ul_light_ambience, "light.ambience");
-    initUniform(ul_light_diffuse, "light.diffuse");
-    initUniform(ul_light_specular, "light.specular");
-    initUniform(ul_light_constant, "light.constant");
-    initUniform(ul_light_linear, "light.linear");
-    initUniform(ul_light_quadratic, "light.quadratic");
+
+    for (int i = 0; i < LIGHTS_NUMBER; i++) {
+        std::string light_string = "lights[" + std::to_string(i) + "].";
+        initUniform(ul_light_position[i], light_string + "position");
+        initUniform(ul_light_ambience[i], light_string + "ambience");
+        initUniform(ul_light_diffuse[i], light_string + "diffuse");
+        initUniform(ul_light_specular[i], light_string + "specular");
+        initUniform(ul_light_constant[i], light_string + "constant");
+        initUniform(ul_light_linear[i], light_string + "linear");
+        initUniform(ul_light_quadratic[i], light_string + "quadratic");
+    }
 
     // material
     initUniform(ul_mat_diffuse, "material.diffuse");
@@ -124,16 +128,16 @@ void Shader::SetUniformViewPosition(glm::vec3 view_position) const
     glUniform3fv(ul_view_position, 1, value_ptr(view_position));
 }
 
-void Shader::SetUniformLight(glm::vec3 light_position, glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular,
+void Shader::SetUniformLight(int index, glm::vec3 light_position, glm::vec3 ambience, glm::vec3 diffuse, glm::vec3 specular,
     float constant, float linear, float quadratic) const
 {
-    glUniform3fv(ul_light_position, 1, value_ptr(light_position));
-    glUniform3fv(ul_light_ambience, 1, value_ptr(ambience));
-    glUniform3fv(ul_light_diffuse, 1, value_ptr(diffuse));
-    glUniform3fv(ul_light_specular, 1, value_ptr(specular));
-    glUniform1f(ul_light_constant, constant);
-    glUniform1f(ul_light_linear, linear);
-    glUniform1f(ul_light_quadratic, quadratic);
+    glUniform3fv(ul_light_position[index], 1, value_ptr(light_position));
+    glUniform3fv(ul_light_ambience[index], 1, value_ptr(ambience));
+    glUniform3fv(ul_light_diffuse[index], 1, value_ptr(diffuse));
+    glUniform3fv(ul_light_specular[index], 1, value_ptr(specular));
+    glUniform1f(ul_light_constant[index], constant);
+    glUniform1f(ul_light_linear[index], linear);
+    glUniform1f(ul_light_quadratic[index], quadratic);
 }
 
 void Shader::SetUniformMaterial(float shininess) const

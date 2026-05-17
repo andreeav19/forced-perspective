@@ -1,5 +1,7 @@
 #version 330 core
 
+#define LIGHTS_NUMBER 4
+
 out vec4 FragColor;
 
 in vec2 TexCoord;
@@ -26,21 +28,19 @@ struct Material {
 
 uniform vec3 viewPos;
 
-uniform Light light;
+uniform Light lights[LIGHTS_NUMBER];
 uniform Material material;
 
-void main() {
+vec3 CalculateLight(Light light, vec3 normal, vec3 viewDirection) {
     vec3 baseDiffuseColor = texture(material.diffuse, TexCoord).rgb;
     vec3 baseSpecular = texture(material.specular, TexCoord).rgb;
 
     vec3 ambience = baseDiffuseColor * light.ambience;
-    vec3 normal = normalize(Normal);
     vec3 lightDirection = normalize(light.position - FragPos);
 
     float diffuseValue = max(dot(normal, lightDirection), 0.0f);
     vec3 diffuse = baseDiffuseColor * diffuseValue * light.diffuse;
 
-    vec3 viewDirection = normalize(viewPos - FragPos);
     vec3 reflectDirection = reflect(-lightDirection, normal);
 
     float specularValue = pow(max(dot(viewDirection, reflectDirection), 0.0f), material.shininess);
@@ -49,6 +49,16 @@ void main() {
     float dist = length(light.position - FragPos);
     float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * dist * dist);
 
-    vec3 finalColor = (ambience + diffuse + specular) * attenuation;
-    FragColor = vec4(finalColor, 1.0f);
+    return (ambience + diffuse + specular) * attenuation;
+}
+
+void main() {
+    vec3 normal = normalize(Normal);
+    vec3 viewDirection = normalize(viewPos - FragPos);
+
+    vec3 result = vec3(0.0f);
+    for (int i = 0; i < LIGHTS_NUMBER; i++)
+        result += CalculateLight(lights[i], normal, viewDirection);
+
+    FragColor = vec4(result, 1.0f);
 }
