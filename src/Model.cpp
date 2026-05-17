@@ -1,6 +1,6 @@
 #include "../headers/Model.h"
 
-void Model::loadModel(std::string filename)
+void Model::loadModel(const std::string &filename)
 {
     const std::filesystem::path file_path = std::filesystem::path(PROJECT_ROOT)/ "models" / filename;
 

@@ -1,0 +1,108 @@
+# Blender 4.1.1 MTL File: 'Sala de jantar.blend'
+# www.blender.org
+
+newmtl Caule
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/grass3_cyc.jpg
+
+newmtl Estofado
+Ns 0.399999
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/Furnishings.Fabrics.Linen.Beige.jpg
+
+newmtl Flores
+Ns 360.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl Louca
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/TexturesCom_MarbleBase0075_1_seamless_S.png
+map_Bump -bm 0.050000 textures/NormalMap.png
+
+newmtl Louca.001
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/TexturesCom_MarbleBase0075_1_seamless_S.png
+map_Bump -bm 0.050000 textures/NormalMap.png
+
+newmtl Madeira
+Ns 640.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/wood _texture3200.jpg
+map_Bump -bm 0.100000 textures/NormalMap (1).png
+
+newmtl Madeira.001
+Ns 640.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/wood _texture3200.jpg
+map_Bump -bm 0.100000 textures/NormalMap (1).png
+
+newmtl Madeira.002
+Ns 640.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/wood _texture3200.jpg
+map_Bump -bm 0.100000 textures/NormalMap (1).png
+
+newmtl MatJarro
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.024403 0.071901 0.035111
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/TexturesCom_Carpet0016_1_seamless_S.jpg
+map_Ks textures/SpecularMap.png
+map_Bump textures/NormalMap.png

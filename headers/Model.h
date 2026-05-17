@@ -13,7 +13,7 @@
 class Model {
     std::vector<Mesh> meshes;
 
-    void loadModel(std::string filename);
+    void loadModel(const std::string &filename);
     void processNode(const aiNode* node, const aiScene* scene);
     Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 

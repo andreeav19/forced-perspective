@@ -9,10 +9,10 @@ int TextureManager::loadTexture(const std::string &filename)
 
     const std::filesystem::path file_path = std::filesystem::path(PROJECT_ROOT)/ "textures" / filename;
     int width = 0, height = 0, channels = 0;
-    unsigned char* pixels = stbi_load(file_path.string().c_str(), &width, &height, &channels, 0);
+    unsigned char* pixels = stbi_load(file_path.string().c_str(), &width, &height, &channels, 4);
 
     if (!pixels) {
-        std::cout << "Error loading texture " << filename.c_str() << ": " << stbi_failure_reason() << std::endl;
+        std::cout << "Error loading texture " << file_path.string() << ": " << stbi_failure_reason() << std::endl;
         return -1;
     }
 
@@ -25,15 +25,7 @@ int TextureManager::loadTexture(const std::string &filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    GLenum format = GL_RGB;
-    if (channels == 3) format = GL_RGB;
-    else if (channels == 4) format = GL_RGBA;
-    else {
-        std::cout << "Error loading texture " << filename.c_str() << ": " << "unsupported format." << std::endl;
-        return -1;
-    }
-
-    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(pixels);
