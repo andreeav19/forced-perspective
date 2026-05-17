@@ -24,5 +24,7 @@ public:
     explicit Model(const std::string &filename);
     ~Model() = default;
 
+    void Clear() const;
+
     void Render(glm::mat4 model=glm::mat4(1));
 };

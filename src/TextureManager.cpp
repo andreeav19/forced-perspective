@@ -26,7 +26,6 @@ int TextureManager::loadTexture(const std::string &filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     GLenum format = GL_RGB;
-    if (channels == 1) format = GL_RED;
     if (channels == 3) format = GL_RGB;
     else if (channels == 4) format = GL_RGBA;
     else {

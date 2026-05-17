@@ -4,13 +4,14 @@
 
 #include "Model.h"
 
-class Scene {
+class ModelManager {
     std::vector<Model> models;
 
 public:
-    Scene() = default;
-    ~Scene() = default;
+    ModelManager() = default;
+    ~ModelManager() = default;
 
     void init();
     void render();
+    void clear() const;
 };

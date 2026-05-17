@@ -29,5 +29,6 @@ public:
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     ~Mesh() = default;
 
+    void Clear() const;
     void Render(const glm::mat4 &model) const;
 };

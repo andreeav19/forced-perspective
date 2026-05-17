@@ -107,6 +107,12 @@ Model::Model(const std::string &filename)
     loadModel(filename);
 }
 
+void Model::Clear() const
+{
+    for (const auto& mesh: meshes)
+        mesh.Clear();
+}
+
 void Model::Render(glm::mat4 model)
 {
     for (const auto& mesh: meshes)

@@ -8,14 +8,8 @@
 #include "Camera.h"
 #include "ActionController.h"
 #include "LightManager.h"
-#include "Material.h"
 
-// temp
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-
-class Scene;
+class ModelManager;
 
 class Application {
     static std::unique_ptr<Application> Instance;
@@ -27,11 +21,7 @@ class Application {
     std::unique_ptr<Shader> shader;
     std::unique_ptr<Camera> camera;
     std::unique_ptr<LightManager> light_manager;
-    std::unique_ptr<Scene> scene;
-
-    // temp
-    unsigned int vao, vbo, ebo;
-    std::unique_ptr<Material> material;
+    std::unique_ptr<ModelManager> model_manager;
 
     float delta_time;
     float last_frame;
@@ -44,7 +34,9 @@ class Application {
     [[nodiscard]] bool init() const;
 
     void render() const;
-    void setupShape(); // temp
+
+    void clear() const;
+
     void updateUniforms() const;
 
     void calculateDeltaTime();

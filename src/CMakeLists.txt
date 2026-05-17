@@ -26,8 +26,8 @@ add_executable(${PROJECT_NAME}
         ../headers/Mesh.h
         Model.cpp
         ../headers/Model.h
-        Scene.cpp
-        ../headers/Scene.h
+        ModelManager.cpp
+        ../headers/ModelManager.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 
