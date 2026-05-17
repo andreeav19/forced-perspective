@@ -15,6 +15,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
+class Scene;
+
 class Application {
     static std::unique_ptr<Application> Instance;
 
@@ -25,6 +27,7 @@ class Application {
     std::unique_ptr<Shader> shader;
     std::unique_ptr<Camera> camera;
     std::unique_ptr<LightManager> light_manager;
+    std::unique_ptr<Scene> scene;
 
     // temp
     unsigned int vao, vbo, ebo;

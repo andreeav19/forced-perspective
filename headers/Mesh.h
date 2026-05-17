@@ -20,12 +20,12 @@ class Mesh {
     unsigned int VAO, VBO, EBO;
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::unique_ptr<Material> material;
+    std::shared_ptr<Material> material;
 
     void SetupMesh();
 
 public:
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::unique_ptr<Material> material);
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::shared_ptr<Material> material);
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     ~Mesh() = default;
 

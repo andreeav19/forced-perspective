@@ -1,7 +1,5 @@
 #pragma once
 
-#include "TextureManager.h"
-
 class Material {
     int diffuse_map;
     int specular_map;

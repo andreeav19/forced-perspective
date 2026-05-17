@@ -1,5 +1,7 @@
 #include "../headers/Application.h"
 
+#include "../headers/Scene.h"
+
 std::unique_ptr<Application> Application::Instance = nullptr;
 
 Application* Application::GetInstance()
@@ -24,6 +26,7 @@ Application::Application(): vao(0), vbo(0), ebo(0), delta_time(0), last_frame(0)
     action_controller = std::make_unique<ActionController>();
     light_manager = std::make_unique<LightManager>();
     material = std::make_unique<Material>();
+    scene = std::make_unique<Scene>();
 }
 
 bool Application::init() const
@@ -161,7 +164,7 @@ void Application::updateUniforms() const
 
     light_manager->SetUniforms();
 
-    shader->SetUniformMaterial(material->GetShininess());
+    scene->render();
 }
 
 void Application::calculateDeltaTime()
@@ -179,13 +182,13 @@ void Application::update() const
 void Application::run()
 {
     if (!init()) return;
-    //temp
-    setupShape();
-    material->SetDiffuseMap(texture_manager->loadTexture("container2.png"));
-    material->SetSpecularMap(texture_manager->loadTexture("container2_specular.png"));
 
     const glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
     camera->calculateCameraVectors();
+
+    texture_manager->loadTexture("diffuse.jpg");
+    texture_manager->loadTexture("specular.jpg");
+    scene->init();
 
     while (!window->shouldClose()) {
         calculateDeltaTime();

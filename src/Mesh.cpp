@@ -2,14 +2,14 @@
 
 #include "../headers/Mesh.h"
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::unique_ptr<Material> material)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::shared_ptr<Material> material)
     : VAO(0), VBO(0), EBO(0), vertices(std::move(vertices)), indices(std::move(indices)), material(std::move(material))
 {
     SetupMesh();
 }
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : VAO(0), VBO(0), EBO(0),
-    vertices(std::move(vertices)), indices(std::move(indices)), material(std::make_unique<Material>())
+    vertices(std::move(vertices)), indices(std::move(indices)), material(std::make_shared<Material>())
 {
     SetupMesh();
 }
@@ -36,13 +36,13 @@ void Mesh::SetupMesh()
         sizeof(Vertex), static_cast<void *>(nullptr));
 
     // normals
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,
         sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, normal)));
 
     // textures
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
         sizeof(Vertex), reinterpret_cast<void *>((offsetof(Vertex, texture_coord))));
 
     glBindVertexArray(0);
@@ -54,8 +54,9 @@ void Mesh::Render(const glm::mat4 &model) const
 
     material->UseTextures();
     shader->SetUniformModel(model);
+    shader->SetUniformMaterial(material->GetShininess());
 
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
 }
