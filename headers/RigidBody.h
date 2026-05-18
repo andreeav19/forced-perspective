@@ -6,7 +6,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
 class RigidBody {
     std::unique_ptr<btRigidBody> rigid_body;
     std::unique_ptr<btCollisionShape> collision_shape;
@@ -20,6 +19,8 @@ public:
     [[nodiscard]] btRigidBody* GetRigidBody() const { return rigid_body.get(); }
     [[nodiscard]] btCollisionShape* GetCollisionShape() const { return collision_shape.get(); }
     [[nodiscard]] btDefaultMotionState* GetMotionState() const { return motion_state.get(); }
+    [[nodiscard]] float GetMass() const { return mass; }
+    [[nodiscard]] glm::mat4 GetCurrentTransform() const;
 
     // TODO: add helper methods for creating model shapes
 };

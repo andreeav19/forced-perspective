@@ -10,5 +10,8 @@ void GameObject::AddRigidBody(btCollisionShape *collision_shape, const float mas
 
 void GameObject::Render()
 {
-    model.Render(transform);
+    if (rigid_body == nullptr || rigid_body->GetMass() == 0)
+        model.Render(transform);
+    else
+        model.Render(rigid_body->GetCurrentTransform());
 }
