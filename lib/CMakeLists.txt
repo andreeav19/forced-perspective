@@ -12,9 +12,14 @@ target_link_libraries(lib INTERFACE
     glad
     glfw
     glm::glm
+    BulletDynamics
+    BulletCollision
+    LinearMath
+    Bullet3Common
     imgui
 )
 
 target_include_directories(lib INTERFACE
     ${CMAKE_SOURCE_DIR}/stb
+    ${CMAKE_SOURCE_DIR}/lib/bullet3/src
 )

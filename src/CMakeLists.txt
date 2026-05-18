@@ -28,6 +28,10 @@ add_executable(${PROJECT_NAME}
         ../headers/Model.h
         ModelManager.cpp
         ../headers/ModelManager.h
+        PhysicsSimulation.cpp
+        ../headers/PhysicsSimulation.h
+        RigidBody.cpp
+        ../headers/RigidBody.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 
