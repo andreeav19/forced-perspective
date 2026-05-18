@@ -1,0 +1,85 @@
+#include "../headers/DebugDrawer.h"
+
+void DebugDrawer::SetupDebugShader()
+{
+    // add shaders
+    debug_shader = glCreateProgram();
+    unsigned int vertex_shader, fragment_shader;
+    int success = Shader::initShader(vertex_shader, GL_VERTEX_SHADER, "debug_vertex.glsl");
+    if (!success) return;
+
+    success = Shader::initShader(fragment_shader, GL_FRAGMENT_SHADER, "debug_fragment.glsl");
+    if (!success) return;
+
+    glAttachShader(debug_shader, vertex_shader);
+    glAttachShader(debug_shader, fragment_shader);
+    glLinkProgram(debug_shader);
+
+    // check errors
+    glGetProgramiv(debug_shader, GL_LINK_STATUS, &success);
+    if (!success) {
+        char infoLog[512];
+        glGetProgramInfoLog(debug_shader, 512, nullptr, infoLog);
+        std::cout << "Error linking shader program: " << infoLog << std::endl;
+        return;
+    }
+
+    // delete shaders
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
+
+    // uniforms
+    ul_view = glGetUniformLocation(debug_shader, "view");
+    if (ul_view == -1) std::cout << "Error getting uniform location for view." << std::endl;
+
+    ul_projection = glGetUniformLocation(debug_shader, "projection");
+    if (ul_projection == -1) std::cout << "Error getting uniform location for projection." << std::endl;
+}
+
+void DebugDrawer::SetupBuffers()
+{
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
+    6 * sizeof(float), static_cast<void *>(nullptr));
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
+        6 * sizeof(float), reinterpret_cast<void *>(3 * sizeof(float)));
+
+    glBindVertexArray(0);
+}
+
+void DebugDrawer::drawLine(const btVector3 &from, const btVector3 &to, const btVector3 &color)
+{
+    vertices.insert(vertices.end(), {
+        from.x(), from.y(), from.z(), color.x(), color.y(), color.z(),
+        to.x(),   to.y(),   to.z(),   color.x(), color.y(), color.z()
+    });
+}
+
+void DebugDrawer::Render(const glm::mat4 &view, const glm::mat4 &projection)
+{
+    if (vertices.empty()) return;
+
+    glUseProgram(debug_shader);
+
+    glUniformMatrix4fv(ul_view, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(ul_projection, 1, GL_FALSE, glm::value_ptr(projection));
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_DYNAMIC_DRAW);
+
+    glDrawArrays(GL_LINES, 0, vertices.size() / 6);
+
+    glBindVertexArray(0);
+    glUseProgram(0);
+
+    vertices.clear();
+}

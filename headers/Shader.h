@@ -21,13 +21,14 @@ class Shader {
     std::array<int, LIGHTS_NUMBER> ul_light_constant, ul_light_linear, ul_light_quadratic;
     int ul_mat_diffuse, ul_mat_specular, ul_mat_shininess;
 
-    static std::string loadShaderSource(const std::string& filename);
-    static bool initShader(unsigned int& shader, GLenum shaderType, const std::string &filename);
     void initUniform(int& uniformLocation, const std::string &uniformName) const;
     void initUniforms();
 
 public:
     Shader() = default;
+
+    static std::string loadShaderSource(const std::string& filename);
+    static bool initShader(unsigned int& shader, GLenum shaderType, const std::string &filename);
 
     bool init();
     void use() const;

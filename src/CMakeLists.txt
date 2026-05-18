@@ -32,6 +32,10 @@ add_executable(${PROJECT_NAME}
         ../headers/PhysicsSimulation.h
         RigidBody.cpp
         ../headers/RigidBody.h
+        GameObject.cpp
+        ../headers/GameObject.h
+        DebugDrawer.cpp
+        ../headers/DebugDrawer.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 
