@@ -31,3 +31,12 @@ void ActionController::ControlCamera(InputManager *input_manager, Camera *camera
     ControlCameraMovement(input_manager, camera);
     ControlCameraOrientation(input_manager, camera);
 }
+
+void ActionController::ControlDebugRender(const InputManager *input_manager, ObjectsManager *objects_manager)
+{
+    static bool was_pressed = false;
+    const bool is_pressed = input_manager->isActionPressed(Action::SwitchDebug);
+    if (is_pressed && !was_pressed)
+        objects_manager->switchDebugRender();
+    was_pressed = is_pressed;
+}

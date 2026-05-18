@@ -6,9 +6,9 @@
 #include <fstream>
 #include <string>
 
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#include <glad/glad.h>
 #include "Constants.h"
 
 #include "Shader.h"
@@ -27,13 +27,13 @@ class DebugDrawer : public btIDebugDraw {
     void SetupBuffers();
 
 public:
-    DebugDrawer() = default;
+    DebugDrawer();
     ~DebugDrawer() override = default;
 
     void drawLine(const btVector3 &from, const btVector3 &to, const btVector3 &color) override;
     void drawContactPoint(const btVector3 &PointOnB, const btVector3 &normalOnB,
         btScalar distance, int lifeTime, const btVector3 &color) override {}
-    void draw3dText(const btVector3 &location, const char *textString) override {};
+    void draw3dText(const btVector3 &location, const char *textString) override {}
     void setDebugMode(int debugMode) override { debug_mode = debugMode; }
     void reportErrorWarning(const char *warningString) override {}
     int getDebugMode() const override { return debug_mode; }

@@ -6,10 +6,10 @@
 #include "Shader.h"
 #include "TextureManager.h"
 #include "Camera.h"
-#include "ActionController.h"
 #include "LightManager.h"
 
-class ModelManager;
+class ObjectsManager;
+class ActionController;
 
 class Application {
     static std::unique_ptr<Application> Instance;
@@ -21,7 +21,7 @@ class Application {
     std::unique_ptr<Shader> shader;
     std::unique_ptr<Camera> camera;
     std::unique_ptr<LightManager> light_manager;
-    std::unique_ptr<ModelManager> model_manager;
+    std::unique_ptr<ObjectsManager> objects_manager;
 
     float delta_time;
     float last_frame;
@@ -33,11 +33,10 @@ class Application {
 
     [[nodiscard]] bool init() const;
 
-    void render() const;
+    void updateUniforms(const glm::mat4 &view, const glm::mat4 &projection) const;
+    void render(const glm::mat4 &view, const glm::mat4 &projection) const;
 
     void clear() const;
-
-    void updateUniforms() const;
 
     void calculateDeltaTime();
     void update() const;

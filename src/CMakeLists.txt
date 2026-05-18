@@ -26,8 +26,8 @@ add_executable(${PROJECT_NAME}
         ../headers/Mesh.h
         Model.cpp
         ../headers/Model.h
-        ModelManager.cpp
-        ../headers/ModelManager.h
+        ObjectsManager.cpp
+        ../headers/ObjectsManager.h
         PhysicsSimulation.cpp
         ../headers/PhysicsSimulation.h
         RigidBody.cpp

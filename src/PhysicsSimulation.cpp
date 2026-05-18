@@ -20,6 +20,7 @@ PhysicsSimulation::PhysicsSimulation()
 
 void PhysicsSimulation::AddRigidBody(const RigidBody* rigid_body) const
 {
+    if (rigid_body == nullptr) return;
     dynamics_world->addRigidBody(rigid_body->GetRigidBody());
 }
 

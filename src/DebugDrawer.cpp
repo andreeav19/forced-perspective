@@ -55,6 +55,12 @@ void DebugDrawer::SetupBuffers()
     glBindVertexArray(0);
 }
 
+DebugDrawer::DebugDrawer()
+{
+    SetupDebugShader();
+    SetupBuffers();
+}
+
 void DebugDrawer::drawLine(const btVector3 &from, const btVector3 &to, const btVector3 &color)
 {
     vertices.insert(vertices.end(), {

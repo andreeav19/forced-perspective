@@ -1,6 +1,7 @@
 #include "../headers/Application.h"
 
-#include "../headers/ModelManager.h"
+#include "../headers/ObjectsManager.h"
+#include "../headers/ActionController.h"
 
 std::unique_ptr<Application> Application::Instance = nullptr;
 
@@ -25,7 +26,7 @@ Application::Application(): delta_time(0), last_frame(0)
     camera = std::make_unique<Camera>();
     action_controller = std::make_unique<ActionController>();
     light_manager = std::make_unique<LightManager>();
-    model_manager = std::make_unique<ModelManager>();
+    objects_manager = std::make_unique<ObjectsManager>();
 }
 
 bool Application::init() const
@@ -52,27 +53,26 @@ bool Application::init() const
 
     texture_manager->init();
 
-    model_manager->init();
+    objects_manager->init();
 
     return true;
 }
 
-void Application::render() const
+void Application::render(const glm::mat4 &view, const glm::mat4 &projection) const
 {
-    model_manager->render();
+    objects_manager->render(view, projection);
 }
 
 void Application::clear() const
 {
-    model_manager->clear();
+    objects_manager->clear();
 }
 
-void Application::updateUniforms() const
+void Application::updateUniforms(const glm::mat4 &view, const glm::mat4 &projection) const
 {
-    const glm::mat4 view = camera->calculateViewMatrix();
     shader->SetUniformView(view);
     shader->SetUniformViewPosition(camera->GetPosition());
-
+    shader->SetUniformProjection(projection);
     light_manager->SetUniforms();
 }
 
@@ -86,6 +86,8 @@ void Application::calculateDeltaTime()
 void Application::update() const
 {
     action_controller->ControlCamera(input_manager.get(), camera.get());
+    action_controller->ControlDebugRender(input_manager.get(), objects_manager.get());
+    objects_manager->update();
 }
 
 void Application::run()
@@ -105,10 +107,9 @@ void Application::run()
         window->clear();
         shader->use();
 
-        shader->SetUniformProjection(projection);
-        updateUniforms();
-
-        render();
+        const glm::mat4 view = camera->calculateViewMatrix();
+        updateUniforms(view, projection);
+        render(view, projection);
 
         window->swapBuffers();
     }

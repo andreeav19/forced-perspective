@@ -22,5 +22,7 @@ public:
     [[nodiscard]] float GetMass() const { return mass; }
     [[nodiscard]] glm::mat4 GetCurrentTransform() const;
 
-    // TODO: add helper methods for creating model shapes
+    static btCollisionShape* CreatePropsShape();
+    static btCollisionShape* CreateRoomShape();
+    static btCollisionShape* CreateBackpackShape();
 };
