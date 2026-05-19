@@ -4,9 +4,12 @@
 #include <vector>
 
 #include <btBulletDynamicsCommon.h>
+#include "BulletCollision/NarrowPhaseCollision/btRaycastCallback.h"
 
+#include "Camera.h"
 #include "DebugDrawer.h"
 #include "RigidBody.h"
+#include "GameObject.h"
 #include "Constants.h"
 
 class PhysicsSimulation {
@@ -19,13 +22,15 @@ class PhysicsSimulation {
 
     bool is_debug_enabled;
 
+
 public:
     PhysicsSimulation();
     ~PhysicsSimulation() = default;
 
     void AddRigidBody(const RigidBody* rigid_body) const;
     void Update() const;
+    void UseRayCast(const Camera* camera) const;
 
-    void EnableDebugDraw(bool is_enabled);
+    void EnableDebugDraw();
     void Render(const glm::mat4 &view, const glm::mat4 &projection) const;
 };

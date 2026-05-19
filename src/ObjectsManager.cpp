@@ -1,9 +1,25 @@
 #include "../headers/ObjectsManager.h"
 
-void ObjectsManager::init()
-{
-    physics_simulation = std::make_unique<PhysicsSimulation>();
+#include "../headers/ActionController.h"
 
+void ObjectsManager::resetObjectsHovered()
+{
+    for (const auto& game_object: game_objects)
+        game_object->SetHovered(false);
+}
+
+GameObject* ObjectsManager::GetHoveredGameObject() const
+{
+    for (const auto& game_object : game_objects) {
+        if (game_object->IsHovered())
+            return game_object.get();
+    }
+
+    return nullptr;
+}
+
+void ObjectsManager::init(const PhysicsSimulation* physics_simulation)
+{
     models.emplace_back("backpack.obj");
     models.emplace_back("room.obj");
     models.emplace_back("props.obj");
@@ -11,13 +27,17 @@ void ObjectsManager::init()
     auto position = glm::vec3(0.0f, 0.01f, 1.0f);
     auto sc = glm::vec3(0.1f);
 
+    // backpack
     game_objects.emplace_back(std::make_unique<GameObject>(models[0], position, sc, glm::vec3(0)));
     game_objects.back()->AddRigidBody(RigidBody::CreateBackpackShape(), 5);
+    game_objects.back()->EnableInteractive();
 
+    // room
     position = glm::vec3(-2.0f, -0.5f, 1.0f);
     game_objects.emplace_back(std::make_unique<GameObject>(models[1], position, glm::vec3(1), glm::vec3(0)));
     game_objects.back()->AddRigidBody(RigidBody::CreateRoomShape());
 
+    // furniture
     position = glm::vec3(-3.0f, -0.8f, 2.0f);
     game_objects.emplace_back(std::make_unique<GameObject>(models[2], position, glm::vec3(1), glm::vec3(0)));
     game_objects.back()->AddRigidBody(RigidBody::CreatePropsShape());
@@ -31,24 +51,16 @@ void ObjectsManager::init()
     }
 }
 
-void ObjectsManager::render(const glm::mat4 &view, const glm::mat4 &projection)
+void ObjectsManager::render()
 {
-    for (const auto& game_object : game_objects) {
+    for (const auto& game_object : game_objects)
         game_object->Render();
-    }
-
-    physics_simulation->Render(view, projection);
 }
 
-void ObjectsManager::update() const
+void ObjectsManager::update(const Camera* camera) const
 {
-    physics_simulation->Update();
-}
-
-void ObjectsManager::switchDebugRender()
-{
-    is_debug_enabled = !is_debug_enabled;
-    physics_simulation->EnableDebugDraw(is_debug_enabled);
+    if (held_game_object)
+        held_game_object->UpdateHoldPosition(camera);
 }
 
 void ObjectsManager::clear() const

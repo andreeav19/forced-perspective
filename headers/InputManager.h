@@ -28,4 +28,5 @@ public:
     void ResetMouseOffsets();
     void processInput() const;
     bool isActionPressed(Action action) const;
+    bool isLeftClickPressed() const;
 };

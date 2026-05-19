@@ -1,5 +1,29 @@
 #include "../headers/PhysicsSimulation.h"
 
+void PhysicsSimulation::UseRayCast(const Camera *camera) const
+{
+    const auto position = camera->GetPosition();
+    const auto front = camera->GetFront();
+
+    const btVector3 from(position.x, position.y, position.z);
+    const btVector3 to(
+        position.x + front.x * RAY_CAST_LENGTH,
+        position.y + front.y * RAY_CAST_LENGTH,
+        position.z + front.z * RAY_CAST_LENGTH
+    );
+
+    btCollisionWorld::AllHitsRayResultCallback results(from, to);
+    results.m_flags |= btTriangleRaycastCallback::kF_KeepUnflippedNormal;
+    results.m_flags |= btTriangleRaycastCallback::kF_UseSubSimplexConvexCastRaytest;
+
+    dynamics_world->rayTest(from, to, results);
+    for (int i = 0; i < results.m_collisionObjects.size(); i++) {
+        const btCollisionObject* collision_object = results.m_collisionObjects[i];
+        const auto game_object = static_cast<GameObject *>(collision_object->getUserPointer());
+        if (game_object) game_object->SetHovered(true);
+    }
+}
+
 PhysicsSimulation::PhysicsSimulation()
 {
     collision_configuration = std::make_unique<btDefaultCollisionConfiguration>();
@@ -29,14 +53,14 @@ void PhysicsSimulation::Update() const
     dynamics_world->stepSimulation(TIME_STEP, MAX_SUB_STEPS);
 }
 
-void PhysicsSimulation::EnableDebugDraw(const bool is_enabled)
+void PhysicsSimulation::EnableDebugDraw()
 {
-    if (is_enabled && debug_drawer == nullptr) {
+    is_debug_enabled = !is_debug_enabled;
+
+    if (is_debug_enabled && debug_drawer == nullptr) {
         debug_drawer.reset(new DebugDrawer());
         dynamics_world->setDebugDrawer(debug_drawer.get());
     }
-
-    is_debug_enabled = is_enabled;
 }
 
 void PhysicsSimulation::Render(const glm::mat4 &view, const glm::mat4 &projection) const

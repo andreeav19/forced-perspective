@@ -30,6 +30,34 @@ glm::mat4 RigidBody::GetCurrentTransform() const
     return model;
 }
 
+void RigidBody::SetActive(const bool is_active) const
+{
+    if (is_active) {
+        btVector3 zero = btVector3(0.0f, 0.0f, 0.0f);
+        rigid_body->setGravity(zero);
+        rigid_body->setLinearVelocity(zero);
+        rigid_body->setAngularVelocity(zero);
+        rigid_body->setActivationState(DISABLE_DEACTIVATION);
+    }
+    else {
+        rigid_body->setGravity(btVector3(0.0f, -9.8f, 0.0f));
+        rigid_body->setActivationState(ACTIVE_TAG);
+    }
+}
+
+void RigidBody::SetTransform(const glm::vec3 position, const glm::quat rotation) const
+{
+    btTransform bt_transform;
+    btQuaternion bt_quaternion;
+    bt_quaternion.setValue(rotation.x, rotation.y, rotation.z, rotation.w);
+
+    bt_transform.setOrigin(btVector3(position.x, position.y, position.z));
+    bt_transform.setRotation(bt_quaternion);
+
+    rigid_body->setWorldTransform(bt_transform);
+    rigid_body->getMotionState()->setWorldTransform(bt_transform);
+}
+
 btCollisionShape * RigidBody::CreatePropsShape()
 {
     const auto compound_shape = new btCompoundShape();

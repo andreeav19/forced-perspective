@@ -15,6 +15,42 @@ void GameObject::AddRigidBody(btCollisionShape *collision_shape, const float mas
     rigid_body.reset(rb);
 }
 
+void GameObject::EnableInteractive()
+{
+    if (rigid_body == nullptr) {
+        std::cout << "Warning: cannot enable object interactive without rigid body." << std::endl;
+        return;
+    }
+    // only interactive objects will be returned by ray cast
+    rigid_body->GetRigidBody()->setUserPointer(this);
+    is_interactive = true;
+}
+
+void GameObject::SetPickUpActive(const bool is_active, const Camera *camera)
+{
+    if (!is_interactive  || is_picked_up == is_active) return;
+
+    is_picked_up = is_active;
+    rigid_body->SetActive(is_active);
+
+    pickup_offset = distance(camera->GetPosition(), position);
+}
+
+void GameObject::UpdateHoldPosition(const Camera *camera) const
+{
+    if (rigid_body == nullptr || !is_picked_up) return;
+
+    const auto camera_pos = camera->GetPosition();
+    const auto camera_front = camera->GetFront();
+
+    const glm::vec3 hold_pos = camera_pos + camera_front * pickup_offset;
+
+    const auto m_rotation = glm::inverse(glm::mat4(camera->calculateViewMatrix()));
+    const glm::quat q_rotation = quat_cast(m_rotation);
+
+    rigid_body->SetTransform(hold_pos, q_rotation);
+}
+
 void GameObject::Render()
 {
     if (rigid_body == nullptr || rigid_body->GetMass() == 0) {

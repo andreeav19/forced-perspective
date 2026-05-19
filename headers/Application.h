@@ -10,6 +10,7 @@
 
 class ObjectsManager;
 class ActionController;
+class PhysicsSimulation;
 
 class Application {
     static std::unique_ptr<Application> Instance;
@@ -22,6 +23,7 @@ class Application {
     std::unique_ptr<Camera> camera;
     std::unique_ptr<LightManager> light_manager;
     std::unique_ptr<ObjectsManager> objects_manager;
+    std::unique_ptr<PhysicsSimulation> physics_simulation;
 
     float delta_time;
     float last_frame;

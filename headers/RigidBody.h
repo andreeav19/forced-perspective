@@ -22,6 +22,9 @@ public:
     [[nodiscard]] float GetMass() const { return mass; }
     [[nodiscard]] glm::mat4 GetCurrentTransform() const;
 
+    void SetActive(bool is_kinematic) const;
+    void SetTransform(glm::vec3 position, glm::quat rotation) const;
+
     static btCollisionShape* CreatePropsShape();
     static btCollisionShape* CreateRoomShape();
     static btCollisionShape* CreateBackpackShape();

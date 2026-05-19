@@ -2,6 +2,7 @@
 
 #include "../headers/ObjectsManager.h"
 #include "../headers/ActionController.h"
+#include "../headers/PhysicsSimulation.h"
 
 std::unique_ptr<Application> Application::Instance = nullptr;
 
@@ -27,6 +28,7 @@ Application::Application(): delta_time(0), last_frame(0)
     action_controller = std::make_unique<ActionController>();
     light_manager = std::make_unique<LightManager>();
     objects_manager = std::make_unique<ObjectsManager>();
+    physics_simulation = std::make_unique<PhysicsSimulation>();
 }
 
 bool Application::init() const
@@ -53,14 +55,15 @@ bool Application::init() const
 
     texture_manager->init();
 
-    objects_manager->init();
+    objects_manager->init(physics_simulation.get());
 
     return true;
 }
 
 void Application::render(const glm::mat4 &view, const glm::mat4 &projection) const
 {
-    objects_manager->render(view, projection);
+    objects_manager->render();
+    physics_simulation->Render(view, projection);
 }
 
 void Application::clear() const
@@ -86,8 +89,21 @@ void Application::calculateDeltaTime()
 void Application::update() const
 {
     action_controller->ControlCamera(input_manager.get(), camera.get());
-    action_controller->ControlDebugRender(input_manager.get(), objects_manager.get());
-    objects_manager->update();
+    action_controller->ControlDebugRender(input_manager.get(), physics_simulation.get());
+
+    physics_simulation->Update();
+    objects_manager->resetObjectsHovered();
+
+    if (objects_manager->GetHeldGameObject() == nullptr)
+        physics_simulation->UseRayCast(camera.get());
+
+    action_controller->ControlPickUp(
+        input_manager.get(),
+        camera.get(),
+        objects_manager->GetHoveredGameObject(),
+        objects_manager->GetHeldGameObject()
+    );
+    objects_manager->update(camera.get());
 }
 
 void Application::run()

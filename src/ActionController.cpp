@@ -32,11 +32,26 @@ void ActionController::ControlCamera(InputManager *input_manager, Camera *camera
     ControlCameraOrientation(input_manager, camera);
 }
 
-void ActionController::ControlDebugRender(const InputManager *input_manager, ObjectsManager *objects_manager)
+void ActionController::ControlDebugRender(const InputManager *input_manager, PhysicsSimulation *physics_simulation)
 {
     static bool was_pressed = false;
     const bool is_pressed = input_manager->isActionPressed(Action::SwitchDebug);
     if (is_pressed && !was_pressed)
-        objects_manager->switchDebugRender();
+        physics_simulation->EnableDebugDraw();
     was_pressed = is_pressed;
+}
+
+void ActionController::ControlPickUp(const InputManager *input_manager, const Camera *camera, GameObject *hovered,
+    GameObject *&held)
+{
+    const bool is_clicked = input_manager->isLeftClickPressed();
+
+    if (hovered && hovered->IsHovered() && is_clicked && held == nullptr) {
+        held = hovered;
+        held->SetPickUpActive(true, camera);
+    }
+    else if (!is_clicked && held != nullptr) {
+        held->SetPickUpActive(false, camera);
+        held = nullptr;
+    }
 }

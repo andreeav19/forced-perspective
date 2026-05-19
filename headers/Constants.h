@@ -3,6 +3,7 @@
 #define LIGHTS_NUMBER 4
 #define TIME_STEP (1.0f / 60.0f)
 #define MAX_SUB_STEPS 10
+#define RAY_CAST_LENGTH 10
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

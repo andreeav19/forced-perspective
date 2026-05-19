@@ -25,6 +25,7 @@ public:
     [[nodiscard]] glm::vec3 GetPosition() const { return position; }
     [[nodiscard]] glm::vec3 GetFront() const { return front; }
     [[nodiscard]] glm::vec3 GetRight() const { return right; }
+    [[nodiscard]] glm::vec3 GetUp() const { return up; }
 
     void calculateCameraVectors();
     void move(glm::vec3 direction);

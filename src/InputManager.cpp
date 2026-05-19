@@ -52,6 +52,11 @@ bool InputManager::isActionPressed(const Action action) const
     return false;
 }
 
+bool InputManager::isLeftClickPressed() const
+{
+    return glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+}
+
 void InputManager::processInput() const
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
