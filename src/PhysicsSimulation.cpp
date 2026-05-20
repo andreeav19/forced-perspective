@@ -11,7 +11,8 @@ bool PhysicsSimulation::UseRayCastPerspective(const Camera *camera, glm::vec3& h
 {
     btVector3 from, to;
     CalculateRayCastPoints(camera, from, to);
-    return UseRayCastPerspective(from, to, hit);
+    return MultipleRayCasts(from, to, hit, camera);
+    // return UseRayCastPerspective(from, to, hit);
 }
 
 void PhysicsSimulation::CalculateRayCastPoints(const Camera *camera, btVector3 &from, btVector3 &to)
@@ -43,6 +44,50 @@ bool PhysicsSimulation::UseRayCastPerspective(const btVector3 from, const btVect
     }
 
     return false;
+}
+
+bool PhysicsSimulation::MultipleRayCasts(const btVector3 from, const btVector3 to, glm::vec3& hit, const Camera* camera)
+{
+    float min_distance = RAY_CAST_LENGTH + 1;
+    bool has_hit = false;
+
+    for (int i = 0; i < RAY_GRID_LENGTH; i++) {
+        for (int j = 0; j < RAY_GRID_LENGTH; j++) {
+            // offset
+            const float offset_x = (i - RAY_GRID_LENGTH / 2) * RAY_DISTANCE;
+            const float offset_y = (j - RAY_GRID_LENGTH / 2) * RAY_DISTANCE;
+            const glm::vec3 offset = camera->GetRight() * offset_x + camera->GetUp() * offset_y;
+
+            btVector3 ray_from(from.x() + offset.x, from.y() + offset.y, from.z() + offset.z);
+            btVector3 ray_to  (to.x()   + offset.x, to.y()   + offset.y, to.z()   + offset.z);
+
+            // cast first ray
+            btCollisionWorld::ClosestRayResultCallback result(ray_from, ray_to);
+            result.m_flags |= btTriangleRaycastCallback::kF_KeepUnflippedNormal;
+            result.m_flags |= btTriangleRaycastCallback::kF_UseSubSimplexConvexCastRaytest;
+
+            result.m_collisionFilterMask = Interactive;
+            dynamics_world->rayTest(ray_from, ray_to, result);
+
+            // cast second ray
+            if (result.hasHit()) {
+                rays.insert({ray_from, ray_to});
+                if (glm::vec3 ray_hit; UseRayCastPerspective(ray_from, ray_to, ray_hit)) {
+                    const float ray_length = distance(glm::vec3(ray_from.x(), ray_from.y(), ray_from.z()), ray_hit);
+                    if (min_distance > ray_length)
+                        min_distance = ray_length;
+                    has_hit = true;
+                }
+            }
+        }
+    }
+
+    // center ray
+    glm::vec3 cam_origin = camera->GetPosition();
+    glm::vec3 cam_front = camera->GetFront();
+    hit = cam_origin + cam_front * min_distance;
+
+    return has_hit;
 }
 
 void PhysicsSimulation::UseRayCastInteractive(const btVector3 from, const btVector3 to) const
@@ -103,9 +148,14 @@ void PhysicsSimulation::EnableDebugDraw()
     }
 }
 
-void PhysicsSimulation::Render(const glm::mat4 &view, const glm::mat4 &projection) const
+void PhysicsSimulation::Render(const glm::mat4 &view, const glm::mat4 &projection)
 {
     if (!is_debug_enabled) return;
     dynamics_world->debugDrawWorld();
     debug_drawer->Render(view, projection);
+
+    for (const auto [from, to] : rays) {
+        debug_drawer->drawLine(from, to, btVector3(0.537f, 0.878f, 1));
+    }
+    rays.clear();
 }

@@ -21,9 +21,11 @@ class PhysicsSimulation {
     std::unique_ptr<btDiscreteDynamicsWorld> dynamics_world;
 
     bool is_debug_enabled;
+    std::map<btVector3, btVector3> rays;
 
     static void CalculateRayCastPoints(const Camera* camera, btVector3& from, btVector3& to);
-    bool UseRayCastPerspective(const btVector3 from, const btVector3 to, glm::vec3& hit);
+    bool UseRayCastPerspective(btVector3 from, btVector3 to, glm::vec3& hit);
+    bool MultipleRayCasts(btVector3 from, btVector3 to, glm::vec3& hit, const Camera *camera);
     void UseRayCastInteractive(btVector3 from, btVector3 to) const;
 
 public:
@@ -36,5 +38,5 @@ public:
     bool UseRayCastPerspective(const Camera *camera, glm::vec3& hit);
 
     void EnableDebugDraw();
-    void Render(const glm::mat4 &view, const glm::mat4 &projection) const;
+    void Render(const glm::mat4 &view, const glm::mat4 &projection);
 };
