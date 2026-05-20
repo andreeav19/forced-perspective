@@ -22,6 +22,9 @@ class PhysicsSimulation {
 
     bool is_debug_enabled;
 
+    static void CalculateRayCastPoints(const Camera* camera, btVector3& from, btVector3& to);
+    bool UseRayCastPerspective(const btVector3 from, const btVector3 to, glm::vec3& hit);
+    void UseRayCastInteractive(btVector3 from, btVector3 to) const;
 
 public:
     PhysicsSimulation();
@@ -29,7 +32,8 @@ public:
 
     void AddRigidBody(const RigidBody* rigid_body) const;
     void Update() const;
-    void UseRayCast(const Camera* camera) const;
+    void UseRayCastInteractive(const Camera* camera) const;
+    bool UseRayCastPerspective(const Camera *camera, glm::vec3& hit);
 
     void EnableDebugDraw();
     void Render(const glm::mat4 &view, const glm::mat4 &projection) const;

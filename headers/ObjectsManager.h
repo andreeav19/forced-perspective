@@ -24,6 +24,7 @@ public:
     void init(const PhysicsSimulation* physics_simulation);
     void render();
     void update(const Camera* camera) const;
+    void update(const Camera* camera, glm::vec3 far_position) const;
 
     void resetObjectsHovered();
     void clear() const;

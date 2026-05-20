@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-RigidBody::RigidBody(glm::mat4 initial_transform, btCollisionShape* collision_shape, const float mass)
+RigidBody::RigidBody(glm::mat4 initial_transform, btCollisionShape* collision_shape, const float mass, CollisionGroup group)
     : collision_shape(collision_shape), mass(mass)
 {
     btTransform bt_transform;
@@ -17,6 +17,8 @@ RigidBody::RigidBody(glm::mat4 initial_transform, btCollisionShape* collision_sh
     btRigidBody::btRigidBodyConstructionInfo rb_info(
         mass, motion_state.get(), this->collision_shape.get(), local_inertia);
     rigid_body = std::make_unique<btRigidBody>(rb_info);
+
+    collision_group = group;
 }
 
 glm::mat4 RigidBody::GetCurrentTransform() const
@@ -172,6 +174,7 @@ btCollisionShape * RigidBody::CreateRoomShape()
 btCollisionShape * RigidBody::CreateBackpackShape()
 {
     const auto compound_shape = new btCompoundShape();
+    compound_shape->setLocalScaling(btVector3(1.0f, 1.0f, 1.0f));
 
     btTransform transform;
     transform.setIdentity();
@@ -180,4 +183,15 @@ btCollisionShape * RigidBody::CreateBackpackShape()
     compound_shape->addChildShape(transform, new btBoxShape(btVector3(0.18f, 0.17f, 0.05)));
 
     return compound_shape;
+}
+
+float RigidBody::CalculateHalfDimensionZ() const
+{
+    btVector3 min, max;
+    const auto collision_shape = rigid_body->getCollisionShape();
+    const auto transform = rigid_body->getWorldTransform();
+
+    collision_shape->getAabb(transform, min, max);
+
+    return (max.z() - min.z()) / 2 ;
 }

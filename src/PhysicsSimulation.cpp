@@ -1,20 +1,57 @@
 #include "../headers/PhysicsSimulation.h"
 
-void PhysicsSimulation::UseRayCast(const Camera *camera) const
+void PhysicsSimulation::UseRayCastInteractive(const Camera *camera) const
+{
+    btVector3 from, to;
+    CalculateRayCastPoints(camera, from, to);
+    UseRayCastInteractive(from, to);
+}
+
+bool PhysicsSimulation::UseRayCastPerspective(const Camera *camera, glm::vec3& hit)
+{
+    btVector3 from, to;
+    CalculateRayCastPoints(camera, from, to);
+    return UseRayCastPerspective(from, to, hit);
+}
+
+void PhysicsSimulation::CalculateRayCastPoints(const Camera *camera, btVector3 &from, btVector3 &to)
 {
     const auto position = camera->GetPosition();
     const auto front = camera->GetFront();
 
-    const btVector3 from(position.x, position.y, position.z);
-    const btVector3 to(
+    from = btVector3(position.x, position.y, position.z);
+    to = btVector3(
         position.x + front.x * RAY_CAST_LENGTH,
         position.y + front.y * RAY_CAST_LENGTH,
         position.z + front.z * RAY_CAST_LENGTH
     );
+}
 
+bool PhysicsSimulation::UseRayCastPerspective(const btVector3 from, const btVector3 to, glm::vec3 &hit)
+{
+    btCollisionWorld::ClosestRayResultCallback result(from, to);
+    result.m_flags |= btTriangleRaycastCallback::kF_KeepUnflippedNormal;
+    result.m_flags |= btTriangleRaycastCallback::kF_UseSubSimplexConvexCastRaytest;
+
+    result.m_collisionFilterMask = Default;
+
+    dynamics_world->rayTest(from, to, result);
+    if (result.hasHit()) {
+        const btVector3 bt_hit = result.m_hitPointWorld;
+        hit = glm::vec3(bt_hit.x(), bt_hit.y(), bt_hit.z());
+        return true;
+    }
+
+    return false;
+}
+
+void PhysicsSimulation::UseRayCastInteractive(const btVector3 from, const btVector3 to) const
+{
     btCollisionWorld::AllHitsRayResultCallback results(from, to);
     results.m_flags |= btTriangleRaycastCallback::kF_KeepUnflippedNormal;
     results.m_flags |= btTriangleRaycastCallback::kF_UseSubSimplexConvexCastRaytest;
+
+    results.m_collisionFilterMask = Interactive;
 
     dynamics_world->rayTest(from, to, results);
     for (int i = 0; i < results.m_collisionObjects.size(); i++) {
@@ -45,7 +82,10 @@ PhysicsSimulation::PhysicsSimulation()
 void PhysicsSimulation::AddRigidBody(const RigidBody* rigid_body) const
 {
     if (rigid_body == nullptr) return;
-    dynamics_world->addRigidBody(rigid_body->GetRigidBody());
+    dynamics_world->addRigidBody(
+        rigid_body->GetRigidBody(),
+        rigid_body->GetCollisionGroup(),
+        Default | Interactive);
 }
 
 void PhysicsSimulation::Update() const

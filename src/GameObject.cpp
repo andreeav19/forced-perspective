@@ -1,9 +1,10 @@
 #include "../headers/GameObject.h"
 
 GameObject::GameObject(Model model, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
-    : model(model), position(position), scale(scale), rotation(rotation) {}
+    : model(model), position(position), scale(scale), rotation(rotation),
+      original_position(0), original_scale(0) {}
 
-void GameObject::AddRigidBody(btCollisionShape *collision_shape, const float mass)
+void GameObject::AddRigidBody(btCollisionShape *collision_shape, const float mass, const CollisionGroup collision_group)
 {
     auto transform = glm::mat4(1.0f);
     transform = translate(transform, position);
@@ -11,27 +12,25 @@ void GameObject::AddRigidBody(btCollisionShape *collision_shape, const float mas
     transform = rotate(transform, glm::radians(rotation.y), glm::vec3(0, 1, 0));
     transform = rotate(transform, glm::radians(rotation.z), glm::vec3(0, 0, 1));
 
-    const auto rb = new RigidBody(transform, collision_shape, mass);
+    const auto rb = new RigidBody(transform, collision_shape, mass, collision_group);
     rigid_body.reset(rb);
-}
 
-void GameObject::EnableInteractive()
-{
-    if (rigid_body == nullptr) {
-        std::cout << "Warning: cannot enable object interactive without rigid body." << std::endl;
-        return;
+    if (collision_group == Interactive) {
+        rigid_body->GetRigidBody()->setUserPointer(this);
     }
-    // only interactive objects will be returned by ray cast
-    rigid_body->GetRigidBody()->setUserPointer(this);
-    is_interactive = true;
 }
 
 void GameObject::SetPickUpActive(const bool is_active, const Camera *camera)
 {
-    if (!is_interactive  || is_picked_up == is_active) return;
+    if (is_picked_up == is_active) return;
 
     is_picked_up = is_active;
     rigid_body->SetActive(is_active);
+
+    original_position = position;
+    original_scale = scale;
+    original_bt_scale = rigid_body->GetCollisionShape()->getLocalScaling();
+    original_distance = distance(camera->GetPosition(), original_position);
 
     pickup_offset = distance(camera->GetPosition(), position);
 }
@@ -74,4 +73,28 @@ void GameObject::Render()
         model.Render(rb_transform);
 
     }
+}
+
+void GameObject::ForceScale(const Camera* camera, const glm::vec3 far_position)
+{
+    const float new_distance = distance(camera->GetPosition(), far_position);
+    const glm::vec3 new_scale = original_scale * (new_distance / original_distance);
+
+    const float half_rb_z = rigid_body->CalculateHalfDimensionZ();
+    const float offset = half_rb_z * new_scale.z * 1.2f;
+    const glm::vec3 new_position = far_position - camera->GetFront() * offset;
+
+    position = new_position;
+    scale = new_scale;
+
+    const auto m_rotation = glm::inverse(glm::mat4(camera->calculateViewMatrix()));
+    const glm::quat q_rotation = quat_cast(m_rotation);
+    rigid_body->SetTransform(position, q_rotation);
+
+    const btVector3 new_bt_scale(
+        original_bt_scale.x() * (new_scale.x / original_scale.x),
+        original_bt_scale.y() * (new_scale.y / original_scale.y),
+        original_bt_scale.z() * (new_scale.z / original_scale.z)
+    );
+    rigid_body->GetCollisionShape()->setLocalScaling(new_bt_scale);
 }

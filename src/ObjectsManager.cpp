@@ -29,8 +29,7 @@ void ObjectsManager::init(const PhysicsSimulation* physics_simulation)
 
     // backpack
     game_objects.emplace_back(std::make_unique<GameObject>(models[0], position, sc, glm::vec3(0)));
-    game_objects.back()->AddRigidBody(RigidBody::CreateBackpackShape(), 5);
-    game_objects.back()->EnableInteractive();
+    game_objects.back()->AddRigidBody(RigidBody::CreateBackpackShape(), 5, Interactive);
 
     // room
     position = glm::vec3(-2.0f, -0.5f, 1.0f);
@@ -61,6 +60,12 @@ void ObjectsManager::update(const Camera* camera) const
 {
     if (held_game_object)
         held_game_object->UpdateHoldPosition(camera);
+}
+
+void ObjectsManager::update(const Camera *camera, const glm::vec3 far_position) const
+{
+    if (held_game_object)
+        held_game_object->ForceScale(camera, far_position);
 }
 
 void ObjectsManager::clear() const

@@ -94,8 +94,14 @@ void Application::update() const
     physics_simulation->Update();
     objects_manager->resetObjectsHovered();
 
+    bool has_hit = false;
+    glm::vec3 far_position = glm::vec3(0.0f);
+
     if (objects_manager->GetHeldGameObject() == nullptr)
-        physics_simulation->UseRayCast(camera.get());
+        physics_simulation->UseRayCastInteractive(camera.get());
+    else {
+        has_hit = physics_simulation->UseRayCastPerspective(camera.get(), far_position);
+    }
 
     action_controller->ControlPickUp(
         input_manager.get(),
@@ -103,7 +109,11 @@ void Application::update() const
         objects_manager->GetHoveredGameObject(),
         objects_manager->GetHeldGameObject()
     );
-    objects_manager->update(camera.get());
+
+    if (!has_hit)
+        objects_manager->update(camera.get());
+    else
+        objects_manager->update(camera.get(), far_position);
 }
 
 void Application::run()
