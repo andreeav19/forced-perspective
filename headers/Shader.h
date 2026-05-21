@@ -29,6 +29,7 @@ public:
 
     static std::string loadShaderSource(const std::string& filename);
     static bool initShader(unsigned int& shader, GLenum shaderType, const std::string &filename);
+    static bool initShaderProgram(unsigned int &shader, const std::string &vertex, const std::string &fragment);
 
     bool init();
     void use() const;

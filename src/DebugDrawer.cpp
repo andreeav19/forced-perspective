@@ -2,31 +2,7 @@
 
 void DebugDrawer::SetupDebugShader()
 {
-    // add shaders
-    debug_shader = glCreateProgram();
-    unsigned int vertex_shader, fragment_shader;
-    int success = Shader::initShader(vertex_shader, GL_VERTEX_SHADER, "debug_vertex.glsl");
-    if (!success) return;
-
-    success = Shader::initShader(fragment_shader, GL_FRAGMENT_SHADER, "debug_fragment.glsl");
-    if (!success) return;
-
-    glAttachShader(debug_shader, vertex_shader);
-    glAttachShader(debug_shader, fragment_shader);
-    glLinkProgram(debug_shader);
-
-    // check errors
-    glGetProgramiv(debug_shader, GL_LINK_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetProgramInfoLog(debug_shader, 512, nullptr, infoLog);
-        std::cout << "Error linking shader program: " << infoLog << std::endl;
-        return;
-    }
-
-    // delete shaders
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    Shader::initShaderProgram(debug_shader, "debug_vertex.glsl", "debug_fragment.glsl");
 
     // uniforms
     ul_view = glGetUniformLocation(debug_shader, "view");

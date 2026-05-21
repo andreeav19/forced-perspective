@@ -18,4 +18,6 @@ public:
     void useTexture(int texture_id, unsigned int unit);
 
     int loadTexture(const std::string &filename);
+    int loadFramebufferColorTexture();
+    int loadFramebufferDepthTexture();
 };

@@ -36,6 +36,8 @@ add_executable(${PROJECT_NAME}
         ../headers/GameObject.h
         DebugDrawer.cpp
         ../headers/DebugDrawer.h
+        PostProcess.cpp
+        ../headers/PostProcess.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE lib)
 

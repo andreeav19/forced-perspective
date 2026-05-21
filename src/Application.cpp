@@ -3,6 +3,7 @@
 #include "../headers/ObjectsManager.h"
 #include "../headers/ActionController.h"
 #include "../headers/PhysicsSimulation.h"
+#include "../headers/PostProcess.h"
 
 std::unique_ptr<Application> Application::Instance = nullptr;
 
@@ -29,6 +30,7 @@ Application::Application(): delta_time(0), last_frame(0)
     light_manager = std::make_unique<LightManager>();
     objects_manager = std::make_unique<ObjectsManager>();
     physics_simulation = std::make_unique<PhysicsSimulation>();
+    post_process = std::make_unique<PostProcess>();
 }
 
 bool Application::init() const
@@ -56,6 +58,8 @@ bool Application::init() const
     texture_manager->init();
 
     objects_manager->init(physics_simulation.get());
+
+    post_process->init(texture_manager.get());
 
     return true;
 }
@@ -130,12 +134,19 @@ void Application::run()
         input_manager->processInput();
         update();
 
-        window->clear();
-        shader->use();
-
         const glm::mat4 view = camera->calculateViewMatrix();
+
+        post_process->activate();
+
+        shader->use();
         updateUniforms(view, projection);
         render(view, projection);
+
+        post_process->deactivate();
+
+        window->clear();
+
+        post_process->renderQuad(texture_manager.get());
 
         window->swapBuffers();
     }

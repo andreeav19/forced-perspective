@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "LightManager.h"
 
+class PostProcess;
 class ObjectsManager;
 class ActionController;
 class PhysicsSimulation;
@@ -24,6 +25,7 @@ class Application {
     std::unique_ptr<LightManager> light_manager;
     std::unique_ptr<ObjectsManager> objects_manager;
     std::unique_ptr<PhysicsSimulation> physics_simulation;
+    std::unique_ptr<PostProcess> post_process;
 
     float delta_time;
     float last_frame;
