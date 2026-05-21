@@ -46,7 +46,7 @@ int TextureManager::loadFramebufferColorTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    const std::string name = "framebuffer" + texture_id;
+    const std::string name = "framebuffer" + std::to_string(texture_id);
     textures[name] = texture_id;
     return texture_id;
 }
@@ -64,7 +64,7 @@ int TextureManager::loadFramebufferDepthTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    const std::string name = "framebuffer" + texture_id;
+    const std::string name = "framebuffer" + std::to_string(texture_id);
     textures[name] = texture_id;
     return texture_id;
 }

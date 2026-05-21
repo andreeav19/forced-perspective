@@ -136,17 +136,23 @@ void Application::run()
 
         const glm::mat4 view = camera->calculateViewMatrix();
 
-        post_process->activate();
-
+        // default scene
+        window->clear();
+        post_process->activateScreenFramebuffer();
         shader->use();
         updateUniforms(view, projection);
         render(view, projection);
 
-        post_process->deactivate();
+        // blurred scene
+        post_process->activateBlurFramebuffer();
+        post_process->useBlur(texture_manager.get());
+        post_process->renderQuad();
 
-        window->clear();
+        // dof scene
+        post_process->activateDefaultFramebuffer();
+        post_process->useDof(texture_manager.get());
+        post_process->renderQuad();
 
-        post_process->renderQuad(texture_manager.get());
 
         window->swapBuffers();
     }
