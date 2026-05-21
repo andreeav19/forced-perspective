@@ -150,7 +150,7 @@ void Application::run()
 
         // dof scene
         post_process->activateDefaultFramebuffer();
-        post_process->useDof(texture_manager.get());
+        post_process->useDof(texture_manager.get(), objects_manager.get());
         post_process->renderQuad();
 
 

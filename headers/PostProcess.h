@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 
+#include "ObjectsManager.h"
 #include "TextureManager.h"
 #include "Shader.h"
 
@@ -11,7 +12,7 @@ class PostProcess {
     unsigned int VAO, VBO;
     int screen_texture, depth_texture, blur_texture;
     unsigned int ul_dof_screen_texture, ul_dof_depth_texture, ul_dof_blur_texture,
-                 ul_blur_screen_texture;
+                 ul_blur_screen_texture, ul_dof_is_held;
 
     bool setupShaders();
     void setupQuad();
@@ -28,5 +29,5 @@ public:
 
     void renderQuad() const;
     void useBlur(TextureManager* texture_manager) const;
-    void useDof(TextureManager* texture_manager) const;
+    void useDof(TextureManager* texture_manager, ObjectsManager* objects_manager) const;
 };

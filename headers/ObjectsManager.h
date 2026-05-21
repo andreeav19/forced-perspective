@@ -18,8 +18,8 @@ public:
     ~ObjectsManager() = default;
 
     GameObject* GetHoveredGameObject() const;
-
     GameObject*& GetHeldGameObject() { return held_game_object; }
+    bool IsObjectHeld() const { return held_game_object? true : false;}
 
     void init(const PhysicsSimulation* physics_simulation);
     void render();
