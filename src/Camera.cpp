@@ -14,23 +14,23 @@ Camera::Camera()
     pitch = 0.0f;
 }
 
-void Camera::calculateCameraVectors()
+void Camera::CalculateCameraVectors()
 {
     right = normalize(cross(world_up, front));
     up = normalize(cross(front, right));
 }
 
-glm::mat4 Camera::calculateViewMatrix() const
+glm::mat4 Camera::CalculateViewMatrix() const
 {
     return lookAt(position, position + front, up);
 }
 
-void Camera::move(const glm::vec3 direction)
+void Camera::Move(const glm::vec3 direction)
 {
     position += direction * move_speed * Application::GetInstance()->GetDeltaTime();
 }
 
-void Camera::orient(const double mouse_x, const double mouse_y)
+void Camera::Orient(const double mouse_x, const double mouse_y)
 {
     yaw += mouse_x;
     pitch += mouse_y;
@@ -44,7 +44,7 @@ void Camera::orient(const double mouse_x, const double mouse_y)
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     front = normalize(direction);
 
-    calculateCameraVectors();
+    CalculateCameraVectors();
 }
 
 

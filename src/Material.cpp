@@ -16,6 +16,6 @@ Material::Material()
 void Material::UseTextures() const
 {
     const auto texture_manager = Application::GetInstance()->GetTextureManager();
-    texture_manager->useTexture(diffuse_map, 0);
-    texture_manager->useTexture(specular_map, 1);
+    texture_manager->UseTexture(diffuse_map, 0);
+    texture_manager->UseTexture(specular_map, 1);
 }

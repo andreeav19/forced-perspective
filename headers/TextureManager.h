@@ -14,10 +14,10 @@ class TextureManager {
 public:
     ~TextureManager();
 
-    void init();
-    void useTexture(int texture_id, unsigned int unit);
+    void Init();
+    void UseTexture(int texture_id, unsigned int unit);
 
-    int loadTexture(const std::string &filename);
-    int loadFramebufferColorTexture();
-    int loadFramebufferDepthTexture();
+    int LoadTexture(const std::string &filename);
+    int LoadFramebufferColorTexture();
+    int LoadFramebufferDepthTexture();
 };

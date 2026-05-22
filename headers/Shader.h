@@ -21,18 +21,18 @@ class Shader {
     std::array<int, LIGHTS_NUMBER> ul_light_constant, ul_light_linear, ul_light_quadratic;
     int ul_mat_diffuse, ul_mat_specular, ul_mat_shininess;
 
-    void initUniform(int& uniformLocation, const std::string &uniformName) const;
-    void initUniforms();
+    void InitUniform(int& uniformLocation, const std::string &uniformName) const;
+    void InitUniforms();
 
 public:
     Shader() = default;
 
-    static std::string loadShaderSource(const std::string& filename);
-    static bool initShader(unsigned int& shader, GLenum shaderType, const std::string &filename);
-    static bool initShaderProgram(unsigned int &shader, const std::string &vertex, const std::string &fragment);
+    static std::string LoadShaderSource(const std::string& filename);
+    static bool InitShader(unsigned int& shader, GLenum shaderType, const std::string &filename);
+    static bool InitShaderProgram(unsigned int &shader, const std::string &vertex, const std::string &fragment);
 
-    bool init();
-    void use() const;
+    bool Init();
+    void Use() const;
 
     void SetUniformModel(glm::mat4 model) const;
     void SetUniformView(glm::mat4 view) const;

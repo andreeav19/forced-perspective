@@ -4,25 +4,25 @@ void ActionController::ControlCameraMovement(const InputManager *input_manager, 
 {
     glm::vec3 direction(0.0f);
 
-    if (input_manager->isActionPressed(Action::MoveLeft))
+    if (input_manager->IsActionPressed(Action::MoveLeft))
         direction += camera->GetRight();
-    if (input_manager->isActionPressed(Action::MoveRight))
+    if (input_manager->IsActionPressed(Action::MoveRight))
         direction -= camera->GetRight();
-    if (input_manager->isActionPressed(Action::MoveFront))
+    if (input_manager->IsActionPressed(Action::MoveFront))
         direction += camera->GetFront();
-    if (input_manager->isActionPressed(Action::MoveBack))
+    if (input_manager->IsActionPressed(Action::MoveBack))
         direction -= camera->GetFront();
 
     if (length(direction) > 0.0f)
         direction = normalize(direction);
 
     direction.y = 0.0f; // temp solution
-    camera->move(direction);
+    camera->Move(direction);
 }
 
 void ActionController::ControlCameraOrientation(InputManager *input_manager, Camera *camera)
 {
-    camera->orient(input_manager->GetMouseXOffset(), input_manager->GetMouseYOffset());
+    camera->Orient(input_manager->GetMouseXOffset(), input_manager->GetMouseYOffset());
     input_manager->ResetMouseOffsets();
 }
 
@@ -35,7 +35,7 @@ void ActionController::ControlCamera(InputManager *input_manager, Camera *camera
 void ActionController::ControlDebugRender(const InputManager *input_manager, PhysicsSimulation *physics_simulation)
 {
     static bool was_pressed = false;
-    const bool is_pressed = input_manager->isActionPressed(Action::SwitchDebug);
+    const bool is_pressed = input_manager->IsActionPressed(Action::SwitchDebug);
     if (is_pressed && !was_pressed)
         physics_simulation->EnableDebugDraw();
     was_pressed = is_pressed;
@@ -44,7 +44,7 @@ void ActionController::ControlDebugRender(const InputManager *input_manager, Phy
 void ActionController::ControlPickUp(const InputManager *input_manager, const Camera *camera, GameObject *hovered,
     GameObject *&held)
 {
-    const bool is_clicked = input_manager->isLeftClickPressed();
+    const bool is_clicked = input_manager->IsLeftClickPressed();
 
     if (hovered && hovered->IsHovered() && is_clicked && held == nullptr) {
         held = hovered;

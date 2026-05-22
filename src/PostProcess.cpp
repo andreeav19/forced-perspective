@@ -2,18 +2,18 @@
 
 #include "../headers/ObjectsManager.h"
 
-bool PostProcess::setupShaders()
+bool PostProcess::SetupShaders()
 {
-    bool success = Shader::initShaderProgram(dof_shader, "simple_vertex.glsl", "dof_fragment.glsl");
+    bool success = Shader::InitShaderProgram(dof_shader, "simple_vertex.glsl", "dof_fragment.glsl");
     if (!success) return false;
 
-    success = Shader::initShaderProgram(blur_shader, "simple_vertex.glsl", "blur_fragment.glsl");
+    success = Shader::InitShaderProgram(blur_shader, "simple_vertex.glsl", "blur_fragment.glsl");
     if (!success) return false;
 
     return success;
 }
 
-void PostProcess::setupQuad()
+void PostProcess::SetupQuad()
 {
     constexpr float quadVertices[] = {
         // positions   // texCoords
@@ -39,16 +39,16 @@ void PostProcess::setupQuad()
         4 * sizeof(float), reinterpret_cast<void *>(2 * sizeof(float)));
 }
 
-bool PostProcess::init(TextureManager *texture_manager)
+bool PostProcess::Init(TextureManager *texture_manager)
 {
     // screen framebuffer
     glGenFramebuffers(1, &FBO_S);
     glBindFramebuffer(GL_FRAMEBUFFER, FBO_S);
 
-    screen_texture = texture_manager->loadFramebufferColorTexture();
+    screen_texture = texture_manager->LoadFramebufferColorTexture();
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, screen_texture, 0);
 
-    depth_texture = texture_manager->loadFramebufferDepthTexture();
+    depth_texture = texture_manager->LoadFramebufferDepthTexture();
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_texture, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
@@ -60,7 +60,7 @@ bool PostProcess::init(TextureManager *texture_manager)
     glGenFramebuffers(1, &FBO_B);
     glBindFramebuffer(GL_FRAMEBUFFER, FBO_B);
 
-    blur_texture = texture_manager->loadFramebufferColorTexture();
+    blur_texture = texture_manager->LoadFramebufferColorTexture();
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, blur_texture, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
@@ -68,13 +68,13 @@ bool PostProcess::init(TextureManager *texture_manager)
         return false;
     }
 
-    activateDefaultFramebuffer();
-    setupQuad();
+    ActivateDefaultFramebuffer();
+    SetupQuad();
 
-    return setupShaders();
+    return SetupShaders();
 }
 
-void PostProcess::activateBlurFramebuffer() const
+void PostProcess::ActivateBlurFramebuffer() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FBO_B);
 
@@ -83,7 +83,7 @@ void PostProcess::activateBlurFramebuffer() const
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void PostProcess::activateScreenFramebuffer() const
+void PostProcess::ActivateScreenFramebuffer() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FBO_S);
 
@@ -92,31 +92,31 @@ void PostProcess::activateScreenFramebuffer() const
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void PostProcess::activateDefaultFramebuffer()
+void PostProcess::ActivateDefaultFramebuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void PostProcess::renderQuad() const
+void PostProcess::RenderQuad() const
 {
     glBindVertexArray(VAO);
     glDisable(GL_DEPTH_TEST);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void PostProcess::useBlur(TextureManager* texture_manager) const
+void PostProcess::UseBlur(TextureManager* texture_manager) const
 {
     glUseProgram(blur_shader);
-    texture_manager->useTexture(screen_texture, 0);
+    texture_manager->UseTexture(screen_texture, 0);
     glUniform1i(glGetUniformLocation(dof_shader, "screenTexture"), 0);
 }
 
-void PostProcess::useDof(TextureManager *texture_manager, ObjectsManager* objects_manager) const
+void PostProcess::UseDof(TextureManager *texture_manager, ObjectsManager* objects_manager) const
 {
     glUseProgram(dof_shader);
-    texture_manager->useTexture(blur_texture, 0);
-    texture_manager->useTexture(depth_texture, 1);
-    texture_manager->useTexture(screen_texture, 2);
+    texture_manager->UseTexture(blur_texture, 0);
+    texture_manager->UseTexture(depth_texture, 1);
+    texture_manager->UseTexture(screen_texture, 2);
 
     glUniform1i(glGetUniformLocation(dof_shader, "blurTexture"), 0);
     glUniform1i(glGetUniformLocation(dof_shader, "depthTexture"), 1);

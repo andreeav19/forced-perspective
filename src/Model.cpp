@@ -96,7 +96,7 @@ int Model::processTextureData(const aiMaterial *material, const aiTextureType te
         texture_path = texture_path.filename();
 
         const auto& texture_manager = Application::GetInstance()->GetTextureManager();
-        return texture_manager->loadTexture(texture_path.string());
+        return texture_manager->LoadTexture(texture_path.string());
     }
 
     return -1;

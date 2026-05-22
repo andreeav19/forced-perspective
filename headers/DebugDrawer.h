@@ -21,7 +21,7 @@ class DebugDrawer : public btIDebugDraw {
     unsigned int ul_view, ul_projection;
     unsigned int VAO, VBO;
 
-    std::pmr::vector<float> vertices;
+    std::vector<float> vertices;
 
     void SetupDebugShader();
     void SetupBuffers();

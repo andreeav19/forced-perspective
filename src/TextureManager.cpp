@@ -3,7 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../lib/stb/stb_image.h"
 
-int TextureManager::loadTexture(const std::string &filename)
+int TextureManager::LoadTexture(const std::string &filename)
 {
     if (textures.contains(filename)) return textures[filename];
 
@@ -33,7 +33,7 @@ int TextureManager::loadTexture(const std::string &filename)
     return texture_id;
 }
 
-int TextureManager::loadFramebufferColorTexture()
+int TextureManager::LoadFramebufferColorTexture()
 {
     unsigned int texture_id;
     glGenTextures(1, &texture_id);
@@ -51,7 +51,7 @@ int TextureManager::loadFramebufferColorTexture()
     return texture_id;
 }
 
-int TextureManager::loadFramebufferDepthTexture()
+int TextureManager::LoadFramebufferDepthTexture()
 {
     unsigned int texture_id;
     glGenTextures(1, &texture_id);
@@ -75,12 +75,12 @@ TextureManager::~TextureManager()
         glDeleteTextures(1, &texture_id);
 }
 
-void TextureManager::init()
+void TextureManager::Init()
 {
-    loadTexture(default_texture);
+    LoadTexture(default_texture);
 }
 
-void TextureManager::useTexture(const int texture_id, const unsigned int unit)
+void TextureManager::UseTexture(const int texture_id, const unsigned int unit)
 {
     glActiveTexture(GL_TEXTURE0 + unit);
 

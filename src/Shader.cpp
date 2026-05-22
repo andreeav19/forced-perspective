@@ -1,6 +1,6 @@
 #include "../headers/Shader.h"
 
-std::string Shader::loadShaderSource(const std::string& filename)
+std::string Shader::LoadShaderSource(const std::string& filename)
 {
     const std::filesystem::path file_path = std::filesystem::path(PROJECT_ROOT)/ "shaders" / filename;
     std::ifstream file(file_path);
@@ -16,10 +16,10 @@ std::string Shader::loadShaderSource(const std::string& filename)
     return buffer.str();
 }
 
-bool Shader::initShader(unsigned int& shader, const GLenum shaderType, const std::string& filename)
+bool Shader::InitShader(unsigned int& shader, const GLenum shaderType, const std::string& filename)
 {
     shader = glCreateShader(shaderType);
-    const std::string source = loadShaderSource(filename);
+    const std::string source = LoadShaderSource(filename);
     const GLchar* vertShader = source.c_str();
     glShaderSource(shader, 1, &vertShader, nullptr);
     glCompileShader(shader);
@@ -36,14 +36,14 @@ bool Shader::initShader(unsigned int& shader, const GLenum shaderType, const std
     return true;
 }
 
-bool Shader::initShaderProgram(unsigned int &shader, const std::string &vertex, const std::string &fragment)
+bool Shader::InitShaderProgram(unsigned int &shader, const std::string &vertex, const std::string &fragment)
 {
     shader = glCreateProgram();
     unsigned int vertex_shader, fragment_shader;
-    int success = initShader(vertex_shader, GL_VERTEX_SHADER, vertex);
+    int success = InitShader(vertex_shader, GL_VERTEX_SHADER, vertex);
     if (!success) return false;
 
-    success = initShader(fragment_shader, GL_FRAGMENT_SHADER, fragment);
+    success = InitShader(fragment_shader, GL_FRAGMENT_SHADER, fragment);
     if (!success) return false;
 
     glAttachShader(shader, vertex_shader);
@@ -65,7 +65,7 @@ bool Shader::initShaderProgram(unsigned int &shader, const std::string &vertex, 
     return true;
 }
 
-void Shader::initUniform(int& uniformLocation, const std::string &uniformName) const
+void Shader::InitUniform(int& uniformLocation, const std::string &uniformName) const
 {
     uniformLocation = glGetUniformLocation(shader_program, uniformName.c_str());
     if (uniformLocation == -1) {
@@ -73,42 +73,42 @@ void Shader::initUniform(int& uniformLocation, const std::string &uniformName) c
     }
 }
 
-void Shader::initUniforms()
+void Shader::InitUniforms()
 {
     // transforms
-    initUniform(ul_model, "model");
-    initUniform(ul_view, "view");
-    initUniform(ul_projection, "projection");
+    InitUniform(ul_model, "model");
+    InitUniform(ul_view, "view");
+    InitUniform(ul_projection, "projection");
 
     // light
-    initUniform(ul_view_position, "viewPos");
+    InitUniform(ul_view_position, "viewPos");
 
     for (int i = 0; i < LIGHTS_NUMBER; i++) {
         std::string light_string = "lights[" + std::to_string(i) + "].";
-        initUniform(ul_light_position[i], light_string + "position");
-        initUniform(ul_light_ambience[i], light_string + "ambience");
-        initUniform(ul_light_diffuse[i], light_string + "diffuse");
-        initUniform(ul_light_specular[i], light_string + "specular");
-        initUniform(ul_light_constant[i], light_string + "constant");
-        initUniform(ul_light_linear[i], light_string + "linear");
-        initUniform(ul_light_quadratic[i], light_string + "quadratic");
+        InitUniform(ul_light_position[i], light_string + "position");
+        InitUniform(ul_light_ambience[i], light_string + "ambience");
+        InitUniform(ul_light_diffuse[i], light_string + "diffuse");
+        InitUniform(ul_light_specular[i], light_string + "specular");
+        InitUniform(ul_light_constant[i], light_string + "constant");
+        InitUniform(ul_light_linear[i], light_string + "linear");
+        InitUniform(ul_light_quadratic[i], light_string + "quadratic");
     }
 
     // material
-    initUniform(ul_mat_diffuse, "material.diffuse");
-    initUniform(ul_mat_specular, "material.specular");
-    initUniform(ul_mat_shininess, "material.shininess");
+    InitUniform(ul_mat_diffuse, "material.diffuse");
+    InitUniform(ul_mat_specular, "material.specular");
+    InitUniform(ul_mat_shininess, "material.shininess");
 }
 
-bool Shader::init()
+bool Shader::Init()
 {
-    initShaderProgram(shader_program, "vertex.glsl", "fragment.glsl");
-    initUniforms();
+    InitShaderProgram(shader_program, "vertex.glsl", "fragment.glsl");
+    InitUniforms();
 
     return true;
 }
 
-void Shader::use() const
+void Shader::Use() const
 {
     glUseProgram(shader_program);
 }

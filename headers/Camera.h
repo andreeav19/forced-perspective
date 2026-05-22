@@ -27,8 +27,8 @@ public:
     [[nodiscard]] glm::vec3 GetRight() const { return right; }
     [[nodiscard]] glm::vec3 GetUp() const { return up; }
 
-    void calculateCameraVectors();
-    void move(glm::vec3 direction);
-    void orient(double mouse_x, double mouse_y);
-    [[nodiscard]] glm::mat4 calculateViewMatrix() const;
+    void CalculateCameraVectors();
+    void Move(glm::vec3 direction);
+    void Orient(double mouse_x, double mouse_y);
+    [[nodiscard]] glm::mat4 CalculateViewMatrix() const;
 };

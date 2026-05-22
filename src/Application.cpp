@@ -26,28 +26,27 @@ Application::Application(): delta_time(0), last_frame(0)
     texture_manager = std::make_unique<TextureManager>();
     shader = std::make_unique<Shader>();
     camera = std::make_unique<Camera>();
-    action_controller = std::make_unique<ActionController>();
     light_manager = std::make_unique<LightManager>();
     objects_manager = std::make_unique<ObjectsManager>();
     physics_simulation = std::make_unique<PhysicsSimulation>();
     post_process = std::make_unique<PostProcess>();
 }
 
-bool Application::init() const
+bool Application::Init() const
 {
-    window->init();
+    window->Init();
     const std::string error = "Failed to initialise the application";
-    if (!window->createWindow()) {
+    if (!window->CreateWindow()) {
         std::cout << error << std::endl;
         return false;
     }
 
-    if (!window->load()) {
+    if (!window->Load()) {
         std::cout << error << std::endl;
         return false;
     }
 
-    if (!shader->init()) {
+    if (!shader->Init()) {
         std::cout << error << std::endl;
         return false;
     }
@@ -55,27 +54,27 @@ bool Application::init() const
     input_manager->SetWindow(window->GetWindow());
     input_manager->SetupMouseInput();
 
-    texture_manager->init();
+    texture_manager->Init();
 
-    objects_manager->init(physics_simulation.get());
+    objects_manager->Init(physics_simulation.get());
 
-    post_process->init(texture_manager.get());
+    post_process->Init(texture_manager.get());
 
     return true;
 }
 
-void Application::render(const glm::mat4 &view, const glm::mat4 &projection) const
+void Application::Render(const glm::mat4 &view, const glm::mat4 &projection) const
 {
-    objects_manager->render();
+    objects_manager->Render();
     physics_simulation->Render(view, projection);
 }
 
-void Application::clear() const
+void Application::Clear() const
 {
-    objects_manager->clear();
+    objects_manager->Clear();
 }
 
-void Application::updateUniforms(const glm::mat4 &view, const glm::mat4 &projection) const
+void Application::UpdateUniforms(const glm::mat4 &view, const glm::mat4 &projection) const
 {
     shader->SetUniformView(view);
     shader->SetUniformViewPosition(camera->GetPosition());
@@ -83,23 +82,23 @@ void Application::updateUniforms(const glm::mat4 &view, const glm::mat4 &project
     light_manager->SetUniforms();
 }
 
-void Application::calculateDeltaTime()
+void Application::CalculateDeltaTime()
 {
     const float current_frame = glfwGetTime();
     delta_time = current_frame - last_frame;
     last_frame = current_frame;
 }
 
-void Application::update() const
+void Application::Update() const
 {
-    action_controller->ControlCamera(input_manager.get(), camera.get());
-    action_controller->ControlDebugRender(input_manager.get(), physics_simulation.get());
+    ActionController::ControlCamera(input_manager.get(), camera.get());
+    ActionController::ControlDebugRender(input_manager.get(), physics_simulation.get());
 
     physics_simulation->Update();
-    objects_manager->resetObjectsHovered();
+    objects_manager->ResetObjectsHovered();
 
     bool has_hit = false;
-    glm::vec3 far_position = glm::vec3(0.0f);
+    auto far_position = glm::vec3(0.0f);
 
     if (objects_manager->GetHeldGameObject() == nullptr)
         physics_simulation->UseRayCastInteractive(camera.get());
@@ -107,7 +106,7 @@ void Application::update() const
         has_hit = physics_simulation->UseRayCastPerspective(camera.get(), far_position);
     }
 
-    action_controller->ControlPickUp(
+    ActionController::ControlPickUp(
         input_manager.get(),
         camera.get(),
         objects_manager->GetHoveredGameObject(),
@@ -115,48 +114,47 @@ void Application::update() const
     );
 
     if (!has_hit)
-        objects_manager->update(camera.get());
+        objects_manager->Update(camera.get());
     else
-        objects_manager->update(camera.get(), far_position);
+        objects_manager->Update(camera.get(), far_position);
 }
 
 void Application::run()
 {
-    if (!init()) return;
+    if (!Init()) return;
 
     const glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-    camera->calculateCameraVectors();
+    camera->CalculateCameraVectors();
 
-    while (!window->shouldClose()) {
-        calculateDeltaTime();
+    while (!window->ShouldClose()) {
+        CalculateDeltaTime();
 
-        window->pollEvents();
-        input_manager->processInput();
-        update();
+        window->PollEvents();
+        input_manager->ExitApplication();
+        Update();
 
-        const glm::mat4 view = camera->calculateViewMatrix();
+        const glm::mat4 view = camera->CalculateViewMatrix();
 
         // default scene
-        window->clear();
-        post_process->activateScreenFramebuffer();
-        shader->use();
-        updateUniforms(view, projection);
-        render(view, projection);
+        window->Clear();
+        post_process->ActivateScreenFramebuffer();
+        shader->Use();
+        UpdateUniforms(view, projection);
+        Render(view, projection);
 
         // blurred scene
-        post_process->activateBlurFramebuffer();
-        post_process->useBlur(texture_manager.get());
-        post_process->renderQuad();
+        post_process->ActivateBlurFramebuffer();
+        post_process->UseBlur(texture_manager.get());
+        post_process->RenderQuad();
 
         // dof scene
-        post_process->activateDefaultFramebuffer();
-        post_process->useDof(texture_manager.get(), objects_manager.get());
-        post_process->renderQuad();
+        post_process->ActivateDefaultFramebuffer();
+        post_process->UseDof(texture_manager.get(), objects_manager.get());
+        post_process->RenderQuad();
 
-
-        window->swapBuffers();
+        window->SwapBuffers();
     }
 
-    clear();
-    window->terminate();
+    Clear();
+    window->Terminate();
 }

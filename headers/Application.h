@@ -17,7 +17,6 @@ class Application {
     static std::unique_ptr<Application> Instance;
 
     std::unique_ptr<Window> window;
-    std::unique_ptr<ActionController> action_controller;
     std::unique_ptr<InputManager> input_manager;
     std::unique_ptr<TextureManager> texture_manager;
     std::unique_ptr<Shader> shader;
@@ -35,15 +34,15 @@ class Application {
 
     friend std::default_delete<Application>;
 
-    [[nodiscard]] bool init() const;
+    [[nodiscard]] bool Init() const;
 
-    void updateUniforms(const glm::mat4 &view, const glm::mat4 &projection) const;
-    void render(const glm::mat4 &view, const glm::mat4 &projection) const;
+    void UpdateUniforms(const glm::mat4 &view, const glm::mat4 &projection) const;
+    void Render(const glm::mat4 &view, const glm::mat4 &projection) const;
 
-    void clear() const;
+    void Clear() const;
 
-    void calculateDeltaTime();
-    void update() const;
+    void CalculateDeltaTime();
+    void Update() const;
 public:
     static Application* GetInstance();
 

@@ -14,20 +14,20 @@ class PostProcess {
     unsigned int ul_dof_screen_texture, ul_dof_depth_texture, ul_dof_blur_texture,
                  ul_blur_screen_texture, ul_dof_is_held;
 
-    bool setupShaders();
-    void setupQuad();
+    bool SetupShaders();
+    void SetupQuad();
 
 public:
     PostProcess() = default;
     ~PostProcess() = default;
 
-    bool init(TextureManager *texture_manager);
+    bool Init(TextureManager *texture_manager);
 
-    void activateBlurFramebuffer() const;
-    void activateScreenFramebuffer() const;
-    void activateDefaultFramebuffer();
+    void ActivateBlurFramebuffer() const;
+    void ActivateScreenFramebuffer() const;
+    void ActivateDefaultFramebuffer();
 
-    void renderQuad() const;
-    void useBlur(TextureManager* texture_manager) const;
-    void useDof(TextureManager* texture_manager, ObjectsManager* objects_manager) const;
+    void RenderQuad() const;
+    void UseBlur(TextureManager* texture_manager) const;
+    void UseDof(TextureManager* texture_manager, ObjectsManager* objects_manager) const;
 };

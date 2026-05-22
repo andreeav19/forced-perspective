@@ -45,19 +45,19 @@ void InputManager::ResetMouseOffsets()
     mouse_y_offset = 0;
 }
 
-bool InputManager::isActionPressed(const Action action) const
+bool InputManager::IsActionPressed(const Action action) const
 {
     if (glfwGetKey(window, key_bindings.at(action)) == GLFW_PRESS)
         return true;
     return false;
 }
 
-bool InputManager::isLeftClickPressed() const
+bool InputManager::IsLeftClickPressed() const
 {
     return glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
 }
 
-void InputManager::processInput() const
+void InputManager::ExitApplication() const
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);

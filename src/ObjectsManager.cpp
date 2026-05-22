@@ -2,7 +2,7 @@
 
 #include "../headers/ActionController.h"
 
-void ObjectsManager::resetObjectsHovered()
+void ObjectsManager::ResetObjectsHovered()
 {
     for (const auto& game_object: game_objects)
         game_object->SetHovered(false);
@@ -18,7 +18,7 @@ GameObject* ObjectsManager::GetHoveredGameObject() const
     return nullptr;
 }
 
-void ObjectsManager::init(const PhysicsSimulation* physics_simulation)
+void ObjectsManager::Init(const PhysicsSimulation* physics_simulation)
 {
     models.emplace_back("backpack.obj");
     models.emplace_back("room.obj");
@@ -50,25 +50,25 @@ void ObjectsManager::init(const PhysicsSimulation* physics_simulation)
     }
 }
 
-void ObjectsManager::render()
+void ObjectsManager::Render()
 {
     for (const auto& game_object : game_objects)
         game_object->Render();
 }
 
-void ObjectsManager::update(const Camera* camera) const
+void ObjectsManager::Update(const Camera* camera) const
 {
     if (held_game_object)
         held_game_object->UpdateHoldPosition(camera);
 }
 
-void ObjectsManager::update(const Camera *camera, const glm::vec3 far_position) const
+void ObjectsManager::Update(const Camera *camera, const glm::vec3 far_position) const
 {
     if (held_game_object)
         held_game_object->ForceScale(camera, far_position);
 }
 
-void ObjectsManager::clear() const
+void ObjectsManager::Clear() const
 {
     for (const auto& model: models) {
         model.Clear();

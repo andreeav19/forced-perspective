@@ -2,7 +2,7 @@
 
 void DebugDrawer::SetupDebugShader()
 {
-    Shader::initShaderProgram(debug_shader, "debug_vertex.glsl", "debug_fragment.glsl");
+    Shader::InitShaderProgram(debug_shader, "debug_vertex.glsl", "debug_fragment.glsl");
 
     // uniforms
     ul_view = glGetUniformLocation(debug_shader, "view");

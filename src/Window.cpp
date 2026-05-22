@@ -2,7 +2,7 @@
 
 Window::Window(): width(800), height(600) {}
 
-void Window::init()
+void Window::Init()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -14,7 +14,7 @@ void Window::init()
 #endif
 }
 
-bool Window::createWindow()
+bool Window::CreateWindow()
 {
     GLFWwindow* w = glfwCreateWindow(width, height, "Forced Perspective", nullptr, nullptr);
     window.reset(w);
@@ -30,7 +30,7 @@ bool Window::createWindow()
     return true;
 }
 
-bool Window::load()
+bool Window::Load()
 {
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
     {
@@ -41,18 +41,18 @@ bool Window::load()
     return true;
 }
 
-bool Window::shouldClose() const
+bool Window::ShouldClose() const
 {
     return glfwWindowShouldClose(window.get());
 }
 
-void Window::clear() const
+void Window::Clear() const
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::terminate() const
+void Window::Terminate() const
 {
     glfwTerminate();
 }
@@ -62,12 +62,12 @@ void Window::framebuffer_size_callback(GLFWwindow* window, int w, int h)
     glViewport(0, 0, w, h);
 }
 
-void Window::pollEvents() const
+void Window::PollEvents() const
 {
     glfwPollEvents();
 }
 
-void Window::swapBuffers() const
+void Window::SwapBuffers() const
 {
     glfwSwapBuffers(window.get());
 }

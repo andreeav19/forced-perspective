@@ -18,14 +18,14 @@ public:
 
     [[nodiscard]] GLFWwindow *GetWindow() const { return window.get(); }
 
-    [[nodiscard]] bool shouldClose() const;
-    bool createWindow();
-    bool load();
+    [[nodiscard]] bool ShouldClose() const;
+    bool CreateWindow();
+    bool Load();
 
-    void init();
-    void clear() const;
-    void terminate() const;
+    void Init();
+    void Clear() const;
+    void Terminate() const;
 
-    void pollEvents() const;
-    void swapBuffers() const;
+    void PollEvents() const;
+    void SwapBuffers() const;
 };

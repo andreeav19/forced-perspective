@@ -37,5 +37,5 @@ public:
     static btCollisionShape* CreateRoomShape();
     static btCollisionShape* CreateBackpackShape();
 
-    float CalculateHalfDimensionZ() const;
+    [[nodiscard]] float CalculateHalfDimensionZ() const;
 };

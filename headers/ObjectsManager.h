@@ -17,15 +17,15 @@ public:
     ObjectsManager() = default;
     ~ObjectsManager() = default;
 
-    GameObject* GetHoveredGameObject() const;
+    [[nodiscard]] GameObject* GetHoveredGameObject() const;
     GameObject*& GetHeldGameObject() { return held_game_object; }
-    bool IsObjectHeld() const { return held_game_object? true : false;}
+    [[nodiscard]] bool IsObjectHeld() const { return held_game_object? true : false;}
 
-    void init(const PhysicsSimulation* physics_simulation);
-    void render();
-    void update(const Camera* camera) const;
-    void update(const Camera* camera, glm::vec3 far_position) const;
+    void Init(const PhysicsSimulation* physics_simulation);
+    void Render();
+    void Update(const Camera* camera) const;
+    void Update(const Camera* camera, glm::vec3 far_position) const;
 
-    void resetObjectsHovered();
-    void clear() const;
+    void ResetObjectsHovered();
+    void Clear() const;
 };

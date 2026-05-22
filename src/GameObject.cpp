@@ -44,7 +44,7 @@ void GameObject::UpdateHoldPosition(const Camera *camera) const
 
     const glm::vec3 hold_pos = camera_pos + camera_front * pickup_offset;
 
-    const auto m_rotation = glm::inverse(glm::mat4(camera->calculateViewMatrix()));
+    const auto m_rotation = glm::inverse(glm::mat4(camera->CalculateViewMatrix()));
     const glm::quat q_rotation = quat_cast(m_rotation);
 
     rigid_body->SetTransform(hold_pos, q_rotation);
@@ -87,7 +87,7 @@ void GameObject::ForceScale(const Camera* camera, const glm::vec3 far_position)
     position = new_position;
     scale = new_scale;
 
-    const auto m_rotation = glm::inverse(glm::mat4(camera->calculateViewMatrix()));
+    const auto m_rotation = glm::inverse(glm::mat4(camera->CalculateViewMatrix()));
     const glm::quat q_rotation = quat_cast(m_rotation);
     rigid_body->SetTransform(position, q_rotation);
 

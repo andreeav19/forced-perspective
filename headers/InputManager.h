@@ -26,7 +26,7 @@ public:
 
     void SetupMouseInput();
     void ResetMouseOffsets();
-    void processInput() const;
-    bool isActionPressed(Action action) const;
-    bool isLeftClickPressed() const;
+    void ExitApplication() const;
+    [[nodiscard]] bool IsActionPressed(Action action) const;
+    [[nodiscard]] bool IsLeftClickPressed() const;
 };
